@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="UTF-8" />
+  <title>Indian Country Development – Strategy Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Indian Country Strategy Lab – a guided diagnostic for Native-led governments, organizations, and partners to understand where strategy, operations, and data support can have the most impact.">
+  <meta name="keywords" content="tribal consulting, Indian Country strategy, Native organizations, tribal governance, Indigenous consulting, operations, data, evaluation">
+
+  <!-- FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* SCREEN READER ONLY */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+
+    /* PAGE BACKGROUND */
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #ffffff !important;
+    }
+
+    /* ROOT CONTAINER */
+    #icd-site {
+      --bg: #ffffff;
+      --ink: #0f172a;
+      --ink-soft: #4b5563;
+      --ink-muted: #9ca3af;
+      --accent: #0f9c93;
+      --accent-light: #34d3c1;
+      --accent-soft: rgba(15, 156, 147, 0.16);
+      --accent-soft-light: rgba(15, 156, 147, 0.06);
+      --accent-glow: rgba(15, 156, 147, 0.25);
+      --cta-purple: #4c1d95;
+      --cta-purple-soft: rgba(76, 29, 149, 0.16);
+      --line: rgba(15, 23, 42, 0.08);
+      --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+      font-family: var(--font-sans);
+      color: var(--ink);
+      background-color: var(--bg);
+
+      /* dot grid */
+      background-image: radial-gradient(circle, rgba(15,23,42,0.10) 1px, transparent 1px);
+      background-size: 34px 34px;
+
+      width: 100%;
+      max-width: 100%;
+      min-height: 100vh;
+    }
+
+    #icd-site * {
+      box-sizing: border-box;
+    }
+
+    #icd-site a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    #icd-site {
+      font-size: 16px;
+    }
+
+    /* prevent scroll when nav open */
+    #icd-site.nav-open {
+      overflow: hidden;
+    }
+
+    /* HEADER + HAMBURGER */
+    #icd-site .icd-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1.5rem;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    /* LOGO + 3-STRAND BRAID MARK */
+    #icd-site .icd-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      white-space: nowrap;
+    }
+
+    #icd-site .icd-logo-icon {
+      width: 60px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    #icd-site .icd-logo-icon .strand {
+      fill: none;
+      stroke-linecap: round;
+      stroke-width: 6;
+      stroke-dasharray: 400;
+      stroke-dashoffset: 0;
+      animation: weave 14s linear infinite;
+    }
+
+    #icd-site .icd-logo-icon .strand-1 {
+      stroke: var(--accent);
+    }
+    #icd-site .icd-logo-icon .strand-2 {
+      stroke: var(--ink-soft);
+      animation-delay: -4s;
+    }
+    #icd-site .icd-logo-icon .strand-3 {
+      stroke: var(--ink-muted);
+      animation-delay: -8s;
+    }
+
+    @keyframes weave {
+      0%   { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: -400; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #icd-site .icd-logo-icon .strand {
+        animation: none !important;
+      }
+    }
+
+    #icd-site .icd-logo-text {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-soft);
+    }
+
+    #icd-site .icd-logo-tm {
+      font-size: 0.62rem;
+      vertical-align: super;
+      margin-left: 0.08rem;
+    }
+
+    #icd-site .icd-nav-toggle {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 0;
+      width: 30px;
+      height: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    #icd-site .icd-nav-toggle span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--ink);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    #icd-site .icd-nav-toggle.open span:nth-child(1) {
+      transform: translateY(11px) rotate(45deg);
+    }
+    #icd-site .icd-nav-toggle.open span:nth-child(2) {
+      opacity: 0;
+    }
+    #icd-site .icd-nav-toggle.open span:nth-child(3) {
+      transform: translateY(-11px) rotate(-45deg);
+    }
+
+    /* FULLSCREEN NAV DRAWER */
+    #icd-site .icd-nav-drawer {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background: rgba(15,23,42,0.94);
+      color: #ffffff;
+      transform: translateY(-100%);
+      transition: transform 0.25s ease-out;
+      padding: 4.2rem 1.75rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    #icd-site .icd-nav-drawer.open {
+      transform: translateY(0);
+    }
+
+    #icd-site .icd-nav-drawer a {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #e5e7eb;
+      padding: 0.35rem 0;
+    }
+
+    #icd-site .icd-nav-drawer a:hover {
+      color: #ffffff;
+    }
+
+    /* ACTIVE NAV LINK STYLE */
+    #icd-site .icd-nav-drawer a.active {
+      color: var(--accent-light);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* LAYOUT */
+    #icd-site main {
+      padding-top: 5.2rem;
+    }
+
+    #icd-site .section {
+      padding: 0 1.75rem 2.75rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    #icd-site .section--wide {
+      max-width: 1000px;
+    }
+
+    #icd-site .section-label {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 2.4rem 0 1.4rem;
+    }
+
+    #icd-site .label-text {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+      background: var(--accent-soft-light);
+      padding: 0.5rem 0.9rem;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+
+    #icd-site .label-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, var(--line), transparent);
+    }
+
+    #icd-site .lab-intro {
+      font-size: 0.98rem;
+      color: var(--ink-soft);
+      line-height: 1.7;
+      margin-bottom: 2.2rem;
+      max-width: 720px;
+    }
+
+    #icd-site .lab-intro-italic {
+      font-style: italic;
+      color: var(--ink-muted);
+      margin-top: 0.4rem;
+    }
+
+    /* QUESTIONS */
+    #icd-site .lab-question {
+      margin-bottom: 2.3rem;
+    }
+
+    #icd-site .lab-question-title {
+      font-size: 1.02rem;
+      font-weight: 600;
+      margin: 0 0 0.45rem;
+      color: var(--ink);
+    }
+
+    #icd-site .lab-question-help {
+      font-size: 0.9rem;
+      color: var(--ink-muted);
+      margin: 0 0 0.9rem;
+    }
+
+    #icd-site .lab-options-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+    }
+
+    #icd-site .lab-option {
+      border: 1px solid rgba(15,23,42,0.08);
+      border-radius: 12px;
+      padding: 0.85rem 0.9rem;
+      text-align: left;
+      background: rgba(255,255,255,0.96);
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+      transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, transform 0.1s ease;
+    }
+
+    #icd-site .lab-option:hover {
+      border-color: var(--accent-soft);
+      box-shadow: 0 8px 26px rgba(15,23,42,0.08);
+      transform: translateY(-1px);
+    }
+
+    #icd-site .lab-option:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    #icd-site .lab-option.selected {
+      border-color: var(--accent);
+      box-shadow: 0 10px 30px rgba(15,23,42,0.12);
+      background: linear-gradient(to bottom right, rgba(15,156,147,0.035), rgba(15,156,147,0.12));
+    }
+
+    #icd-site .lab-option-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      background: var(--accent-soft-light);
+      flex-shrink: 0;
+    }
+
+    #icd-site .lab-option-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    #icd-site .lab-option-label {
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    #icd-site .lab-option-sub {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      line-height: 1.5;
+    }
+
+    /* ACTIONS */
+    #icd-site .lab-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1.6rem;
+      margin-bottom: 2.1rem;
+      border-top: 1px solid var(--line);
+      padding-top: 1.3rem;
+    }
+
+    #icd-site .lab-actions-left {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.82rem;
+      color: var(--ink-muted);
+    }
+
+    #icd-site .lab-progress {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    #icd-site .lab-actions-buttons {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    #icd-site .lab-button {
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 0.55rem 1.4rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-sans);
+    }
+
+    #icd-site .lab-button-primary {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 10px 30px rgba(15,156,147,0.40);
+    }
+
+    #icd-site .lab-button-primary:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    #icd-site .lab-button-secondary {
+      background: rgba(255,255,255,0.96);
+      color: var(--ink-soft);
+      border-color: var(--line);
+    }
+
+    #icd-site .lab-button-secondary:hover {
+      border-color: var(--accent-soft);
+    }
+
+    #icd-site .lab-button-primary:hover:not(:disabled) {
+      background: #0c7d74;
+    }
+
+    #icd-site .lab-button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* RESULT CARD */
+    #icd-site .lab-result {
+      margin-bottom: 2.5rem;
+    }
+
+    #icd-site .lab-result-card {
+      border-radius: 14px;
+      padding: 1.8rem 1.6rem 1.7rem;
+      background: rgba(255,255,255,0.98);
+      box-shadow: 0 18px 45px rgba(15,23,42,0.18);
+      border-left: 3px solid var(--accent);
+    }
+
+    #icd-site .lab-result-kicker {
+      font-size: 0.74rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+      margin: 0 0 0.45rem;
+    }
+
+    #icd-site .lab-result-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0 0 0.45rem;
+      color: var(--ink);
+    }
+
+    #icd-site .lab-result-tagline {
+      font-size: 0.96rem;
+      color: var(--ink-soft);
+      margin: 0 0 1.1rem;
+      line-height: 1.7;
+    }
+
+    #icd-site .lab-result-list {
+      list-style: none;
+      margin: 0 0 1.2rem;
+      padding: 0;
+    }
+
+    #icd-site .lab-result-list li {
+      position: relative;
+      padding-left: 1.4rem;
+      margin-bottom: 0.55rem;
+      font-size: 0.93rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+    }
+
+    #icd-site .lab-result-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.55rem;
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    #icd-site .lab-result-icd-label {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0 0 0.3rem;
+    }
+
+    #icd-site .lab-result-icd-areas {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      margin: 0 0 1rem;
+    }
+
+    #icd-site .lab-result-cta {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      margin: 0;
+    }
+
+    #icd-site .lab-result-cta a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* FOOTER */
+    #icd-site .site-footer {
+      padding: 3rem 1.75rem 2.5rem;
+      text-align: center;
+      border-top: 1px solid var(--line);
+      margin-top: 1.5rem;
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+      background: rgba(255,255,255,0.96);
+    }
+
+    /* MOBILE TWEAKS */
+    @media (max-width: 720px) {
+      #icd-site .lab-options-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      #icd-site .lab-actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      #icd-site .lab-actions-buttons {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+
+      #icd-site .lab-button {
+        width: auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #icd-site .icd-header {
+        padding: 0.7rem 1rem;
+      }
+
+      #icd-site .icd-logo-icon {
+        width: 52px;
+        height: 16px;
+      }
+
+      #icd-site .icd-logo-text {
+        font-size: 0.7rem;
+        letter-spacing: 0.10em;
+      }
+
+      #icd-site .section {
+        padding: 0 1.25rem 2.5rem;
+      }
+
+      #icd-site .lab-result-card {
+        padding: 1.5rem 1.3rem 1.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="icd-site">
+
+  <h1 class="sr-only">Indian Country Strategy Lab – Indian Country Development</h1>
+
+  <!-- FIXED HEADER + HAMBURGER -->
+  <header class="icd-header">
+    <a href="index.html" class="icd-logo" aria-label="Indian Country Development home">
+      <svg class="icd-logo-icon" viewBox="0 0 200 40" aria-hidden="true">
+        <path class="strand strand-1"
+          d="M 0 26
+             C 25 6, 55 6, 100 26
+             S 175 46, 200 26" />
+        <path class="strand strand-2"
+          d="M 0 20
+             C 30 40, 70 40, 100 20
+             S 170 0, 200 20" />
+        <path class="strand strand-3"
+          d="M 0 14
+             C 25 -6, 55 -6, 100 14
+             S 175 34, 200 14" />
+      </svg>
+      <div class="icd-logo-text">
+        Indian Country Development<span class="icd-logo-tm">™</span>
+      </div>
+    </a>
+    <button class="icd-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </header>
+
+  <!-- FULLSCREEN MENU -->
+  <nav class="icd-nav-drawer" aria-hidden="true">
+    <a href="index.html">Home</a>
+    <a href="what-we-do.html">What We Do</a>
+    <a href="work.html">Who We Work With</a>
+    <a href="who-we-are.html">Who We Are</a>
+    <a href="strategy-lab.html" class="active" aria-current="page">Strategy Lab</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+
+  <main role="main">
+    <section class="section section--wide">
+      <div class="section-label">
+        <span class="label-text">Strategy Lab</span>
+        <span class="label-line"></span>
+      </div>
+
+      <div class="lab-intro">
+        A short diagnostic to reflect on where your work is today and where outside support could actually help.
+        Choose the options that feel closest to your reality—the output is not a score, it’s a snapshot of how we’d
+        typically partner with organizations in a similar spot.
+        <p class="lab-intro-italic">
+          This doesn’t replace community input or formal planning. It’s a starting point for a clearer conversation.
+        </p>
+      </div>
+
+      <form id="strategy-lab-form" novalidate>
+        <!-- Q1: ORG TYPE -->
+        <div class="lab-question" data-question="org">
+          <h2 class="lab-question-title">Who are you doing this work as?</h2>
+          <p class="lab-question-help">Pick the option that best matches your role or the organization you’re thinking about.</p>
+
+          <div class="lab-options-grid">
+            <button type="button" class="lab-option" data-question="org" data-value="tribal-gov">
+              <span class="lab-option-icon" aria-hidden="true">🏛️</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">Tribal Nation / Tribal Government</span>
+                <span class="lab-option-sub">Council, administration, or a department inside tribal government.</span>
+              </span>
+            </button>
+
+            <button type="button" class="lab-option" data-question="org" data-value="enterprise">
+              <span class="lab-option-icon" aria-hidden="true">🏢</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">Tribal Enterprise / ANC</span>
+                <span class="lab-option-sub">Enterprise leadership, holding company, or Alaska Native Corporation.</span>
+              </span>
+            </button>
+
+            <button type="button" class="lab-option" data-question="org" data-value="native-org">
+              <span class="lab-option-icon" aria-hidden="true">🌱</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">Native-led Nonprofit / Urban Indian Org</span>
+                <span class="lab-option-sub">Native-serving organization with its own board or leadership team.</span>
+              </span>
+            </button>
+
+            <button type="button" class="lab-option" data-question="org" data-value="partner">
+              <span class="lab-option-icon" aria-hidden="true">🤝</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">State, Federal, or Philanthropic Partner</span>
+                <span class="lab-option-sub">Working with tribes or Native communities from outside government-to-government structures.</span>
+              </span>
+            </button>
+
+            <button type="button" class="lab-option" data-question="org" data-value="other">
+              <span class="lab-option-icon" aria-hidden="true">🧩</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">Other Native-serving Institution</span>
+                <span class="lab-option-sub">Education, health, coalition, or something that doesn’t fit neatly above.</span>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Q2: FOCUS AREA -->
+        <div class="lab-question" data-question="focus">
+          <h2 class="lab-question-title">Where do you most need support right now?</h2>
+          <p class="lab-question-help">Not everything at once—where would change unlock the most downstream impact?</p>
+
+          <div class="lab-options-grid">
+            <button type="button" class="lab-option" data-question="focus" data-value="governance">
+              <span class="lab-option-icon" aria-hidden="true">📜</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">Strategy &amp; Governance</span>
+                <span class="lab-option-sub">Constitution, codes, councils, boards, long-term direction, or alignment across leaders.</span>
+              </span>
+            </button>
+
+            <button type="button" class="lab-option" data-question="focus" data-value="operations">
+              <span class="lab-option-icon" aria-hidden="true">⚙️</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">Programs &amp; Operations</span>
+                <span class="lab-option-sub">Roles, processes, handoffs, workplans, and how work actually gets done day to day.</span>
+              </span>
+            </button>
+
+            <button type="button" class="lab-option" data-question="focus" data-value="data">
+              <span class="lab-option-icon" aria-hidden="true">📊</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">Data, Evaluation, &amp; Evidence</span>
+                <span class="lab-option-sub">Collecting, cleaning, and using information so leadership and staff can make decisions.</span>
+              </span>
+            </button>
+
+            <button type="button" class="lab-option" data-question="focus" data-value="partnerships">
+              <span class="lab-option-icon" aria-hidden="true">🔗</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">Partnerships &amp; Alignment</span>
+                <span class="lab-option-sub">Getting tribal, Native, public, and private partners rowing in the same direction.</span>
+              </span>
+            </button>
+
+            <button type="button" class="lab-option" data-question="focus" data-value="funding">
+              <span class="lab-option-icon" aria-hidden="true">💰</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">Funding, Grants, &amp; Sustainability</span>
+                <span class="lab-option-sub">Lining up resources, reporting, and structures so work can last beyond one grant cycle.</span>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Q3: CURRENT STATE -->
+        <div class="lab-question" data-question="state">
+          <h2 class="lab-question-title">What feels most true of your current situation?</h2>
+          <p class="lab-question-help">These are all common. Pick the one that feels closest today.</p>
+
+          <div class="lab-options-grid">
+            <button type="button" class="lab-option" data-question="state" data-value="crowded">
+              <span class="lab-option-icon" aria-hidden="true">📚</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">Too many priorities at once</span>
+                <span class="lab-option-sub">There’s a long list of needs and opportunities, but not enough structure to sort and sequence.</span>
+              </span>
+            </button>
+
+            <button type="button" class="lab-option" data-question="state" data-value="stalled">
+              <span class="lab-option-icon" aria-hidden="true">⏸️</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">Plans exist, but follow-through is hard</span>
+                <span class="lab-option-sub">Strategies, resolutions, or MOUs are on paper, but momentum is uneven or stalled.</span>
+              </span>
+            </button>
+
+            <button type="button" class="lab-option" data-question="state" data-value="capacity">
+              <span class="lab-option-icon" aria-hidden="true">🧵</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">Capacity is stretched thin</span>
+                <span class="lab-option-sub">People are carrying multiple roles; new work would overload staff unless something changes.</span>
+              </span>
+            </button>
+
+            <button type="button" class="lab-option" data-question="state" data-value="invisible">
+              <span class="lab-option-icon" aria-hidden="true">🔍</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">Good work, but hard to show it</span>
+                <span class="lab-option-sub">Impact is happening on the ground, but stories, data, or outcomes aren’t visible to decision-makers.</span>
+              </span>
+            </button>
+
+            <button type="button" class="lab-option" data-question="state" data-value="building">
+              <span class="lab-option-icon" aria-hidden="true">🚀</span>
+              <span class="lab-option-content">
+                <span class="lab-option-label">Building something from zero</span>
+                <span class="lab-option-sub">You’re launching a new program, initiative, or entity and want to set it up right the first time.</span>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ACTIONS -->
+        <div class="lab-actions">
+          <div class="lab-actions-left">
+            <span class="lab-progress" id="lab-progress-text">0 of 3 questions answered</span>
+            <span>Answer a few questions to see how we’d usually support organizations in a similar place.</span>
+          </div>
+          <div class="lab-actions-buttons">
+            <button type="button" class="lab-button lab-button-secondary" id="lab-reset">
+              Clear selections
+            </button>
+            <button type="button" class="lab-button lab-button-primary" id="lab-submit" disabled>
+              See your profile
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- RESULT -->
+      <div class="lab-result" id="lab-result" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    © 2025 Tribal Economic Development Partners L.L.C.
+  </footer>
+</div>
+
+<script>
+(function() {
+  // JS is running, so remove no-js class if present
+  document.documentElement.classList.remove('no-js');
+
+  const root = document.getElementById('icd-site');
+  if (!root) return;
+
+  /* NAV TOGGLE */
+  const toggle = root.querySelector('.icd-nav-toggle');
+  const drawer = root.querySelector('.icd-nav-drawer');
+
+  function setNavOpen(open) {
+    if (!toggle || !drawer) return;
+    toggle.classList.toggle('open', open);
+    drawer.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+    root.classList.toggle('nav-open', open);
+  }
+
+  if (toggle && drawer) {
+    toggle.addEventListener('click', () => {
+      const isOpen = drawer.classList.contains('open');
+      setNavOpen(!isOpen);
+    });
+
+    drawer.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => setNavOpen(false));
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      setNavOpen(false);
+    }
+  });
+
+  /* STRATEGY LAB LOGIC */
+  const options = Array.from(root.querySelectorAll('.lab-option'));
+  const progressText = root.querySelector('#lab-progress-text');
+  const submitBtn = root.querySelector('#lab-submit');
+  const resetBtn = root.querySelector('#lab-reset');
+  const resultEl = root.querySelector('#lab-result');
+
+  const questions = ['org', 'focus', 'state'];
+  const selections = {
+    org: null,
+    focus: null,
+    state: null
+  };
+
+  function updateProgress() {
+    const answered = questions.filter(q => selections[q]).length;
+    if (progressText) {
+      progressText.textContent = answered + ' of ' + questions.length + ' questions answered';
+    }
+    if (submitBtn) {
+      submitBtn.disabled = answered !== questions.length;
+    }
+  }
+
+  function clearResult() {
+    if (resultEl) {
+      resultEl.innerHTML = '';
+    }
+  }
+
+  options.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const question = btn.getAttribute('data-question');
+      const value = btn.getAttribute('data-value');
+      if (!question || !value) return;
+
+      // Clear selection for this question
+      options
+        .filter(o => o.getAttribute('data-question') === question)
+        .forEach(o => o.classList.remove('selected'));
+
+      // Select current
+      btn.classList.add('selected');
+      selections[question] = value;
+
+      clearResult();
+      updateProgress();
+    });
+  });
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      options.forEach(o => o.classList.remove('selected'));
+      selections.org = null;
+      selections.focus = null;
+      selections.state = null;
+      clearResult();
+      updateProgress();
+    });
+  }
+
+  // Profiles: keyed first by org|focus; fallback to any|focus; then default
+  const profiles = {
+    // Tribal government
+    'tribal-gov|governance': {
+      title: 'Governance work with a full plate',
+      tagline: 'You’re carrying core governmental responsibilities while trying to modernize structures and position the Nation for what’s next.',
+      bullets: [
+        'Multiple priorities are competing for council and leadership attention.',
+        'Existing codes, resolutions, or plans don’t fully match how work actually happens on the ground.',
+        'There’s a desire for long-term stability across elections and leadership changes.'
+      ],
+      icdAreas: [
+        'Facilitated strategy sessions that translate values and priorities into a concrete, sequenced roadmap.',
+        'Governance reviews that align constitutions, codes, and structures with the work your Nation is actually doing.',
+        'Implementation support that respects political realities while still moving work forward.'
+      ]
+    },
+    'tribal-gov|operations': {
+      title: 'Programs that need clearer structure',
+      tagline: 'The Nation is doing a lot—but the way work is organized may be getting in the way of consistent follow-through.',
+      bullets: [
+        'Staff are juggling overlapping roles across programs and departments.',
+        'Residents and citizens may experience gaps or duplication in services.',
+        'Leaders want to see progress but don’t always have a clear picture of bottlenecks.'
+      ],
+      icdAreas: [
+        'Process mapping across departments to clarify handoffs, responsibilities, and decision points.',
+        'Re-design of program structures so work is sustainable with the staff you actually have.',
+        'Lightweight tracking tools so leadership can see how work is moving without overburdening staff.'
+      ]
+    },
+    'tribal-gov|data': {
+      title: 'Making information actually usable',
+      tagline: 'Data exists in different systems, but it’s not yet telling the full story of what the Nation is accomplishing.',
+      bullets: [
+        'Reporting obligations pull staff time without always feeding local decision-making.',
+        'Different departments may track similar information in different ways.',
+        'Leaders want evidence to support investments, negotiations, or community communication.'
+      ],
+      icdAreas: [
+        'Data readiness assessments that respect sovereignty and community context.',
+        'Design of simple, sovereignty-aligned dashboards and reporting tools.',
+        'Support translating data into narratives for council, citizens, and partners.'
+      ]
+    },
+
+    // Native-led orgs
+    'native-org|operations': {
+      title: 'Native-led work outgrowing informal systems',
+      tagline: 'Your team is doing powerful work with limited infrastructure—and growth is starting to expose the seams.',
+      bullets: [
+        'A small group of people hold most of the institutional knowledge.',
+        'New staff, board members, or partners need clearer on-ramps into the work.',
+        'Funders are supportive but asking for more structure and proof of impact.'
+      ],
+      icdAreas: [
+        'Clarifying roles, decision-making, and basic operating rhythms that fit your culture.',
+        'Developing practical tools—checklists, templates, and workplans—for staff and leadership.',
+        'Aligning program models and evaluation so future growth feels intentional, not reactive.'
+      ]
+    },
+    'native-org|data': {
+      title: 'Telling the story of Native-led work',
+      tagline: 'You know your work is making a difference. The challenge is capturing it in ways that honor community and satisfy funders.',
+      bullets: [
+        'Stories from community are strong, but coding or aggregating them takes time.',
+        'Reporting feels like a separate task instead of a natural extension of the work.',
+        'There’s a mismatch between what funders ask for and what actually matters locally.'
+      ],
+      icdAreas: [
+        'Designing evaluation approaches that start from community definitions of success.',
+        'Building right-sized data practices that staff can realistically maintain.',
+        'Translating local impact into funder-ready language without losing the heart of the work.'
+      ]
+    },
+
+    // Partners
+    'partner|partnerships': {
+      title: 'Partnering with Native nations in a better way',
+      tagline: 'You’re trying to work alongside Native nations and organizations and want to do it with more clarity, respect, and alignment.',
+      bullets: [
+        'There is interest or mandate to partner with tribes or Native communities, but the “how” is not fully clear.',
+        'Internal processes or timelines don’t always line up with tribal governance or community priorities.',
+        'You want to build trust and long-term relationships, not one-off transactions.'
+      ],
+      icdAreas: [
+        'Orientation and training on sovereignty, governance, and practical partnership design.',
+        'Co-developing partnership frameworks and MOUs that respect Native timelines and decision-making.',
+        'Supporting joint planning sessions where tribal and partner priorities can be aligned honestly.'
+      ]
+    },
+
+    // Enterprises / ANCs
+    'enterprise|operations': {
+      title: 'Enterprises balancing mission and margin',
+      tagline: 'You’re responsible for a business or portfolio that has to perform financially and deliver for Native shareholders or citizens.',
+      bullets: [
+        'Operational complexity is growing across sites, subsidiaries, or lines of business.',
+        'Leadership wants clearer visibility into performance and risk across the portfolio.',
+        'There is ongoing pressure to deliver both financial returns and community impact.'
+      ],
+      icdAreas: [
+        'Clarifying roles and decision rights across boards, executives, and management.',
+        'Designing lightweight performance dashboards that center the indicators you actually care about.',
+        'Supporting strategic planning that ties enterprise decisions back to community outcomes.'
+      ]
+    },
+
+    // Generic by focus
+    'any|governance': {
+      title: 'Clarifying direction and decision-making',
+      tagline: 'You’re at a moment where governance, structure, and long-term direction matter as much as any single program.',
+      bullets: [
+        'Different leaders or teams may hold slightly different pictures of the future.',
+        'Existing plans or frameworks don’t fully reflect what’s happening now.',
+        'Important decisions risk being delayed or revisited without a shared map.'
+      ],
+      icdAreas: [
+        'Facilitated strategy and governance work that names tradeoffs and choices clearly.',
+        'Documentation that is concise, usable, and grounded in your own language and context.',
+        'Implementation check-ins so strategy doesn’t die on the shelf.'
+      ]
+    },
+    'any|operations': {
+      title: 'Turning good ideas into repeatable practice',
+      tagline: 'The work is there in pieces; the challenge is stitching it into something that holds under real pressure.',
+      bullets: [
+        'Staff are improvising solutions to gaps that should be solved by structure.',
+        'Community experience can vary depending on who happens to be working that day.',
+        'Internal communication is carrying too much of the weight that systems should carry.'
+      ],
+      icdAreas: [
+        'Mapping how work actually flows today and where it breaks.',
+        'Co-designing processes, tools, and roles with the people who will use them.',
+        'Building operating rhythms—meetings, check-ins, and reporting—that feel helpful, not burdensome.'
+      ]
+    },
+    'any|data': {
+      title: 'Making information work for you, not just funders',
+      tagline: 'There is data in the system. The question is how to make it meaningful for your decisions and your story.',
+      bullets: [
+        'Data collection is happening, but lives in separate systems or files.',
+        'Reporting deadlines drive behavior more than internal learning does.',
+        'Leaders want to see a clearer through-line from data to action.'
+      ],
+      icdAreas: [
+        'Inventorying what you already collect before creating anything new.',
+        'Designing simple visual and narrative ways to share insights with staff and leadership.',
+        'Building feedback loops so data shapes how programs evolve over time.'
+      ]
+    },
+    'any|partnerships': {
+      title: 'Aligning people who care about the same outcomes',
+      tagline: 'Multiple organizations are trying to help. The risk is everyone pulling in slightly different directions.',
+      bullets: [
+        'Partnership meetings are full, but next steps and accountability are not always clear.',
+        'Different partners may have different risk tolerances, timelines, and definitions of success.',
+        'Community members may experience “coordination” as one more meeting, not as relief.'
+      ],
+      icdAreas: [
+        'Helping partners name shared outcomes without flattening Native priorities.',
+        'Structuring partnership tables so decisions are made, tracked, and revisited transparently.',
+        'Clarifying what needs to stay with Native-led institutions versus what partners can carry.'
+      ]
+    },
+    'any|funding': {
+      title: 'Building something that lasts beyond one grant',
+      tagline: 'Funding is a tool—not the whole plan. You’re trying to move from scrambling to sustaining.',
+      bullets: [
+        'Current work is heavily dependent on one or two key funding streams.',
+        'Reporting requirements may be driving more activity than strategy.',
+        'Leadership wants a clearer picture of what it would take to sustain or grow the work.'
+      ],
+      icdAreas: [
+        'Clarifying the core work you want to sustain versus what can remain opportunistic.',
+        'Aligning grant pursuits and partnerships with a longer-term financial picture.',
+        'Designing structures—entities, agreements, or staffing—that can hold growth over time.'
+      ]
+    },
+
+    // Default
+    'default': {
+      title: 'A moment for alignment and structure',
+      tagline: 'You’re doing important work in Native communities or alongside Native nations, and the next step is tightening how the work is organized and supported.',
+      bullets: [
+        'You’re carrying real responsibilities with limited time to step back and see the whole picture.',
+        'Pieces of strategy, operations, and data are present, but not yet fully aligned.',
+        'There is interest—internally or externally—in doing things in a more intentional, lasting way.'
+      ],
+      icdAreas: [
+        'Listening first to how work is already happening and what people are carrying.',
+        'Co-creating strategy, structures, and tools that fit your context, not a generic template.',
+        'Staying focused on implementation so plans, roles, and data get used in real life.'
+      ]
+    }
+  };
+
+  function buildProfile() {
+    if (!resultEl) return;
+
+    const keyOrg = selections.org || 'any';
+    const keyFocus = selections.focus || 'governance';
+
+    let key = keyOrg + '|' + keyFocus;
+    let profile = profiles[key];
+
+    if (!profile) {
+      const anyKey = 'any|' + keyFocus;
+      profile = profiles[anyKey] || profiles['default'];
+    }
+
+    const { title, tagline, bullets, icdAreas } = profile;
+
+    const bulletItems = (bullets || []).map(item => '<li>' + item + '</li>').join('');
+    const icdItems = (icdAreas || []).map(item => '• ' + item).join('<br>');
+
+    resultEl.innerHTML = `
+      <div class="lab-result-card">
+        <p class="lab-result-kicker">Your snapshot</p>
+        <h3 class="lab-result-title">${title}</h3>
+        <p class="lab-result-tagline">${tagline}</p>
+        <ul class="lab-result-list">
+          ${bulletItems}
+        </ul>
+        <p class="lab-result-icd-label">How we typically support clients in a similar place:</p>
+        <p class="lab-result-icd-areas">${icdItems}</p>
+        <p class="lab-result-cta">
+          If this sounds close to your context, <a href="contact.html">start a conversation →</a>
+        </p>
+      </div>
+    `;
+
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  if (submitBtn) {
+    submitBtn.addEventListener('click', () => {
+      const allAnswered = questions.every(q => selections[q]);
+      if (!allAnswered) return;
+      buildProfile();
+    });
+  }
+
+  // Initialize
+  updateProgress();
+})();
+</script>
+</body>
+</html>
