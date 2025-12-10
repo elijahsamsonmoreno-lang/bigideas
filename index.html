@@ -12,6 +12,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
+  <!-- PDF EXPORT LIBRARY -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-YcsIPyxgU4jgZP3V0bCrgTiVkg3YWDaTLOIYFgQqfe8a5m7qST9mEOq7M5HwhcG5s0S6yAxZUfL5VbmjS4Q2Eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
   <style>
     /* SCREEN READER ONLY */
     .sr-only {
@@ -25,7 +28,7 @@
       border: 0;
     }
 
-    /* NO-JS FALLBACK - show all questions if JS fails */
+    /* NO-JS FALLBACK */
     .no-js .lab-question--hidden {
       display: block !important;
     }
@@ -57,11 +60,8 @@
       font-family: var(--font-sans);
       color: var(--ink);
       background-color: var(--bg);
-
-      /* dot grid */
       background-image: radial-gradient(circle, rgba(15,23,42,0.10) 1px, transparent 1px);
       background-size: 34px 34px;
-
       width: 100%;
       max-width: 100%;
       min-height: 100vh;
@@ -80,7 +80,6 @@
       font-size: 16px;
     }
 
-    /* prevent scroll when nav open */
     #icd-site.nav-open {
       overflow: hidden;
     }
@@ -102,7 +101,7 @@
       border-bottom: 1px solid var(--line);
     }
 
-    /* LOGO + 3-STRAND BRAID MARK */
+    /* LOGO + BRAID MARK */
     #icd-site .icd-logo {
       display: inline-flex;
       align-items: center;
@@ -125,17 +124,9 @@
       animation: weave 14s linear infinite;
     }
 
-    #icd-site .icd-logo-icon .strand-1 {
-      stroke: var(--accent);
-    }
-    #icd-site .icd-logo-icon .strand-2 {
-      stroke: var(--ink-soft);
-      animation-delay: -4s;
-    }
-    #icd-site .icd-logo-icon .strand-3 {
-      stroke: var(--ink-muted);
-      animation-delay: -8s;
-    }
+    #icd-site .icd-logo-icon .strand-1 { stroke: var(--accent); }
+    #icd-site .icd-logo-icon .strand-2 { stroke: var(--ink-soft); animation-delay: -4s; }
+    #icd-site .icd-logo-icon .strand-3 { stroke: var(--ink-muted); animation-delay: -8s; }
 
     @keyframes weave {
       0%   { stroke-dashoffset: 0; }
@@ -224,13 +215,11 @@
       color: #ffffff;
     }
 
-    /* ACTIVE NAV LINK STYLE */
     #icd-site .icd-nav-drawer a.active {
       color: var(--accent-light);
       text-decoration: underline;
       text-underline-offset: 3px;
     }
-
     /* LAYOUT */
     #icd-site main {
       padding-top: 5.2rem;
@@ -288,11 +277,6 @@
       margin-top: 0.4rem;
     }
 
-
-
-
-
-
     /* QUESTIONS */
     #icd-site .lab-question {
       margin-bottom: 2.3rem;
@@ -324,14 +308,8 @@
     }
 
     @keyframes lab-question-fade-in {
-      from {
-        opacity: 0;
-        transform: translateY(6px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     #icd-site .lab-options-grid {
@@ -390,7 +368,7 @@
       100% { transform: scale(1); }
     }
 
-    /* DIAMOND BADGES – SAME SHAPE FOR ALL OPTIONS */
+    /* DIAMOND BADGES */
     #icd-site .lab-option-badge {
       width: 32px;
       height: 32px;
@@ -438,8 +416,7 @@
       color: var(--ink-soft);
       line-height: 1.5;
     }
-
-    /* ACTIONS + PROGRESS */
+  /* ACTIONS + PROGRESS */
     #icd-site .lab-actions {
       display: flex;
       justify-content: space-between;
@@ -513,6 +490,15 @@
       opacity: 0.5;
       cursor: not-allowed;
       box-shadow: none;
+    }
+
+    #icd-site .lab-button-primary:not(:disabled) {
+      animation: subtle-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes subtle-pulse {
+      0%, 100% { box-shadow: 0 10px 30px rgba(15,156,147,0.40); }
+      50% { box-shadow: 0 10px 35px rgba(15,156,147,0.55); }
     }
 
     #icd-site .lab-button-secondary {
@@ -674,6 +660,47 @@
       border-radius: 2px;
     }
 
+    /* PDF DOWNLOAD BUTTON */
+    #icd-site .lab-result-actions {
+      margin-top: 1.2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    #icd-site .lab-download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      padding: 0.5rem 1.1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      background: rgba(255,255,255,0.96);
+      color: var(--ink-soft);
+      transition: border-color 0.18s ease, background 0.18s ease;
+    }
+
+    #icd-site .lab-download-btn:hover {
+      border-color: var(--accent-soft);
+      background: var(--accent-soft-light);
+    }
+
+    #icd-site .lab-download-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Hide download button from PDF render */
+    .html2pdf__container .lab-result-actions {
+      display: none !important;
+    }
+
     /* FOOTER */
     #icd-site .site-footer {
       padding: 3rem 1.75rem 2.5rem;
@@ -756,9 +783,6 @@
 <body>
 <div id="icd-site">
 
-
-
-
   <h1 class="sr-only">Starting Point – Indian Country Development diagnostic</h1>
 
   <!-- FIXED HEADER + HAMBURGER -->
@@ -814,15 +838,13 @@
           You can use these results with or without us. Our goal is to offer a small public good: a sharper starting point for your own planning, conversations with leadership, or talks with potential partners.
         </p>
       </div>
-
-      <form id="strategy-lab-form" novalidate>
+<form id="strategy-lab-form" novalidate>
         <!-- Q1: CLIENT TYPE -->
         <fieldset class="lab-question lab-question--visible" data-question="org">
           <legend class="lab-question-title">Where do you sit?</legend>
           <p class="lab-question-help">Pick the option that best matches your role or the client you're thinking about.</p>
 
           <div class="lab-options-grid" role="radiogroup" aria-label="Client type">
-            <!-- 1. Tribal Nation -->
             <button type="button" class="lab-option"
               data-question="org" data-value="tribal-gov"
               role="radio" aria-checked="false" tabindex="0">
@@ -835,7 +857,6 @@
               </span>
             </button>
 
-            <!-- 2. Native Entity Enterprise -->
             <button type="button" class="lab-option"
               data-question="org" data-value="native-entity"
               role="radio" aria-checked="false" tabindex="-1">
@@ -848,7 +869,6 @@
               </span>
             </button>
 
-            <!-- 3. Native-led organization -->
             <button type="button" class="lab-option"
               data-question="org" data-value="native-org"
               role="radio" aria-checked="false" tabindex="-1">
@@ -861,7 +881,6 @@
               </span>
             </button>
 
-            <!-- 4. Non-Native org working in Indian Country -->
             <button type="button" class="lab-option"
               data-question="org" data-value="non-native-org"
               role="radio" aria-checked="false" tabindex="-1">
@@ -874,7 +893,6 @@
               </span>
             </button>
 
-            <!-- 5. Other Native-serving institution -->
             <button type="button" class="lab-option"
               data-question="org" data-value="other"
               role="radio" aria-checked="false" tabindex="-1">
@@ -889,7 +907,7 @@
           </div>
         </fieldset>
 
-        <!-- Q2: FOCUS AREA (copy will be tailored by org) -->
+        <!-- Q2: FOCUS AREA -->
         <fieldset class="lab-question lab-question--hidden" data-question="focus">
           <legend class="lab-question-title" id="focus-question-title">
             Where do you most need support right now?
@@ -971,7 +989,7 @@
           </div>
         </fieldset>
 
-        <!-- Q3: CURRENT STATE / FRICTION (copy will be tailored by org) -->
+        <!-- Q3: CURRENT STATE / FRICTION -->
         <fieldset class="lab-question lab-question--hidden" data-question="state">
           <legend class="lab-question-title" id="state-question-title">
             What's the friction right now?
@@ -1068,7 +1086,7 @@
               <div class="lab-progress-bar-fill" id="lab-progress-bar-fill"></div>
             </div>
             <span class="lab-progress" id="lab-progress-text">0 of 3 questions answered</span>
-            <span>Answer all three questions to see how we'd usually support clients in a similar place.</span>
+            <span id="lab-progress-hint">Answer all three questions to see your snapshot.</span>
           </div>
           <div class="lab-actions-buttons">
             <button 
@@ -1086,7 +1104,7 @@
               id="lab-reset"
               aria-label="Clear all selections and start over"
             >
-              Clear selections
+              Clear
             </button>
             <button 
               type="button" 
@@ -1112,7 +1130,6 @@
 </div>
 <script>
 (function() {
-  // JS is running, so remove no-js class
   document.documentElement.classList.remove('no-js');
 
   const root = document.getElementById('icd-site');
@@ -1157,6 +1174,7 @@
      ======================================== */
   const options = Array.from(root.querySelectorAll('.lab-option'));
   const progressText = root.querySelector('#lab-progress-text');
+  const progressHint = root.querySelector('#lab-progress-hint');
   const progressBar = root.querySelector('#lab-progress-bar');
   const progressBarFill = root.querySelector('#lab-progress-bar-fill');
   const submitBtn = root.querySelector('#lab-submit');
@@ -1180,7 +1198,7 @@
     state: root.querySelector('.lab-question[data-question="state"]')
   };
 
-  let currentStepIndex = 0; // 0 = org, 1 = focus, 2 = state
+  let currentStepIndex = 0;
 
   /* ========================================
      LABEL MAPPINGS
@@ -1209,33 +1227,147 @@
     'building': 'Starting fresh'
   };
 
-  const stateFriction = {
-    crowded: {
-      title: 'Too much at once',
-      text: 'You named a long list of needs and opportunities. The friction is sequencing—deciding what happens now, what waits, and what drops off the list without guilt.'
+  /* ========================================
+     ORG-SPECIFIC FRICTION COPY
+     ======================================== */
+  const stateFrictionCopy = {
+    default: {
+      crowded: {
+        title: 'Too much at once',
+        text: 'You named a long list of needs and opportunities. The friction is sequencing—deciding what happens now, what waits, and what drops off the list without guilt.'
+      },
+      stalled: {
+        title: 'Stalled momentum',
+        text: 'You have plans, resolutions, or MOUs on paper. The friction is converting those into steady follow-through and shared accountability.'
+      },
+      capacity: {
+        title: 'Stretched thin',
+        text: 'People are carrying a lot. The friction is adding structure in a way that protects staff, instead of asking the same people to hold even more.'
+      },
+      invisible: {
+        title: 'Invisible impact',
+        text: 'Good work is happening. The friction is surfacing that impact in ways that feel honest to community and legible to decision-makers and funders.'
+      },
+      building: {
+        title: 'Starting fresh',
+        text: 'You\'re building something new. The friction is designing the foundation with enough structure to last, without freezing the work in place too early.'
+      }
     },
-    stalled: {
-      title: 'Stalled momentum',
-      text: 'You have plans, resolutions, or MOUs on paper. The friction is converting those into steady follow-through and shared accountability.'
+    'tribal-gov': {
+      crowded: {
+        title: 'Competing Nation priorities',
+        text: 'Council, departments, and enterprises all have pressing needs. The friction is finding a shared sequence—what the Nation tackles now versus what waits—without losing momentum or political will.'
+      },
+      stalled: {
+        title: 'Resolutions without traction',
+        text: 'Resolutions, strategic plans, or codes exist on paper. The friction is turning those into consistent action when leadership attention shifts and staff capacity is limited.'
+      },
+      capacity: {
+        title: 'Staff and leaders overloaded',
+        text: 'The same people sit on every committee, respond to every crisis, and carry institutional memory. The friction is adding structure that protects them instead of piling on more.'
+      },
+      invisible: {
+        title: 'Under-recognized Nation impact',
+        text: 'Citizens feel the work, but outside partners and funders don\'t fully see the results. The friction is making impact visible without turning storytelling into another burden.'
+      },
+      building: {
+        title: 'New initiative for the Nation',
+        text: 'You\'re standing up a new office, program, or entity. The friction is designing a foundation that can hold growth and survive leadership transitions.'
+      }
     },
-    capacity: {
-      title: 'Stretched thin',
-      text: 'People are carrying a lot. The friction is adding structure in a way that protects staff, instead of asking the same people to hold even more.'
+    'native-entity': {
+      crowded: {
+        title: 'Crowded enterprise agenda',
+        text: 'Multiple deals, projects, and board priorities are in play. The friction is sequencing across the portfolio so leadership isn\'t constantly triaging.'
+      },
+      stalled: {
+        title: 'Plans that don\'t move',
+        text: 'Strategic plans or board directives exist, but implementation is inconsistent across business units. The friction is building accountability without adding bureaucracy.'
+      },
+      capacity: {
+        title: 'Thin management bandwidth',
+        text: 'Key executives and managers are stretched across too many responsibilities. The friction is freeing up leadership capacity without losing control of critical decisions.'
+      },
+      invisible: {
+        title: 'Impact not visible to owners',
+        text: 'Tribal citizens or shareholders aren\'t seeing a clear story about enterprise performance and community benefit. The friction is connecting business results to the mission in ways people can see.'
+      },
+      building: {
+        title: 'New venture or line of business',
+        text: 'You\'re starting or acquiring something new. The friction is building a solid foundation—governance, operations, and reporting—from day one.'
+      }
     },
-    invisible: {
-      title: 'Invisible impact',
-      text: 'Good work is happening. The friction is surfacing that impact in ways that feel honest to community and legible to decision-makers and funders.'
+    'native-org': {
+      crowded: {
+        title: 'Too many priorities for the team',
+        text: 'The organization keeps saying "yes" because the needs are real. The friction is choosing what to hold and what to let go so the team can actually deliver.'
+      },
+      stalled: {
+        title: 'Good ideas stuck in draft',
+        text: 'Strategic plans, grant proposals, or new programs keep getting deferred. The friction is moving from planning to doing when everyone is already stretched.'
+      },
+      capacity: {
+        title: 'Core staff burnt or stretched',
+        text: 'A small group of people quietly holds most of the work and institutional memory. The friction is building systems that don\'t depend on heroic individual effort.'
+      },
+      invisible: {
+        title: 'Impact hard to show',
+        text: 'The community knows your value, but funders and partners want data you don\'t have time to collect. The friction is telling your story without losing the work itself.'
+      },
+      building: {
+        title: 'New Native-led effort',
+        text: 'You\'re launching something new—a program, collective, or organization. The friction is building with intention so you don\'t have to fix the foundation later.'
+      }
     },
-    building: {
-      title: 'Starting fresh',
-      text: 'You\'re building something new. The friction is designing the foundation with enough structure to last, without freezing the work in place too early.'
+    'non-native-org': {
+      crowded: {
+        title: 'Too many tribal-related asks',
+        text: 'Multiple initiatives, grants, or mandates involve tribes, but there isn\'t a coherent internal strategy. The friction is aligning your organization before you can align with partners.'
+      },
+      stalled: {
+        title: 'Partnerships stuck in "talk" mode',
+        text: 'Conversations with Native nations or organizations are happening, but agreements or action lag behind. The friction is moving from good intentions to concrete commitments.'
+      },
+      capacity: {
+        title: 'Limited internal tribal capacity',
+        text: 'Only a few people understand tribal context, and they\'re stretched across everything. The friction is building broader organizational competency without overburdening your experts.'
+      },
+      invisible: {
+        title: 'Impact unclear to Native partners',
+        text: 'Your internal reports don\'t reflect what tribal partners say matters. The friction is learning to measure and communicate in ways that make sense to the communities you serve.'
+      },
+      building: {
+        title: 'New work in Indian Country',
+        text: 'You\'re starting or expanding work with tribes. The friction is designing the engagement right from the beginning so you don\'t have to repair relationships later.'
+      }
+    },
+    'other': {
+      crowded: {
+        title: 'Competing institutional priorities',
+        text: 'Native-serving work is one of many priorities without a clear place in the overall agenda. The friction is making space for this work when everything feels urgent.'
+      },
+      stalled: {
+        title: 'Initiatives stuck mid-stream',
+        text: 'Commitments were made, but systems and follow-through haven\'t materialized. The friction is rebuilding momentum when attention has moved elsewhere.'
+      },
+      capacity: {
+        title: 'Overextended Native-serving teams',
+        text: 'The people closest to Native communities are carrying too much without enough institutional support. The friction is getting the rest of the institution to share the load.'
+      },
+      invisible: {
+        title: 'Native-serving work not visible',
+        text: 'Good work is happening but isn\'t well understood by leadership or peers. The friction is making this work legible to decision-makers who control resources.'
+      },
+      building: {
+        title: 'New Native-serving effort',
+        text: 'You\'re building a new program, center, or partnership focused on Native communities. The friction is designing something that can grow and last inside a larger institution.'
+      }
     }
   };
 
-  /* ========================================
+/* ========================================
      ORG-SPECIFIC QUESTION & OPTION COPY
      ======================================== */
-
   const focusQuestionTitleEl = questionEls.focus
     ? questionEls.focus.querySelector('.lab-question-title')
     : null;
@@ -1292,15 +1424,15 @@
     },
     'native-entity': {
       title: 'Where does the enterprise most need support right now?',
-      help: 'Consider the portfolio you are carrying—where would better structure or visibility move the whole enterprise forward?'
+      help: 'Consider the portfolio you\'re carrying—where would better structure or visibility move the whole enterprise forward?'
     },
     'native-org': {
-      title: 'Where does your Native-led organization most need support?',
+      title: 'Where does your organization most need support?',
       help: 'Think about the work your team is already doing—where would some added structure or clarity relieve the most pressure?'
     },
     'non-native-org': {
       title: 'Where do you most need support for work in Indian Country?',
-      help: 'Focus on the parts of your work that touch Native nations or Native communities—where is the biggest gap right now?'
+      help: 'Focus on the parts of your work that touch Native nations or communities—where is the biggest gap right now?'
     },
     'other': {
       title: 'Where does your institution most need support?',
@@ -1314,294 +1446,114 @@
       help: 'These are all common. Pick the one that feels closest today.'
     },
     'tribal-gov': {
-      title: 'What’s the friction inside the Nation right now?',
+      title: 'What\'s the friction inside the Nation right now?',
       help: 'Focus on what leaders, staff, and citizens are bumping up against in daily work.'
     },
     'native-entity': {
-      title: 'What’s the friction inside the enterprise right now?',
-      help: 'Think about the pressure points between strategy, operations, and owners/shareholders.'
+      title: 'What\'s the friction inside the enterprise right now?',
+      help: 'Think about the pressure points between strategy, operations, and owners or shareholders.'
     },
     'native-org': {
-      title: 'What’s the friction for your Native-led organization?',
+      title: 'What\'s the friction for your organization?',
       help: 'Where does the work feel heavy, confusing, or stalled for your team or board?'
     },
     'non-native-org': {
-      title: 'What’s the friction in your work with Native partners?',
-      help: 'Think about where good intentions are running into process, power, or timing barriers.'
+      title: 'What\'s the friction in your work with Native partners?',
+      help: 'Think about where good intentions run into process, power, or timing barriers.'
     },
     'other': {
-      title: 'What’s the friction for your institution right now?',
+      title: 'What\'s the friction for your institution right now?',
       help: 'Focus on the Native-serving side of your work, wherever it lives in the system.'
     }
   };
 
   const focusOptionCopy = {
     default: {
-      governance: {
-        label: 'Strategy & governance',
-        sub: 'Long-term direction, structures, alignment across leaders and decision-makers.'
-      },
-      operations: {
-        label: 'Programs & operations',
-        sub: 'Roles, processes, handoffs, and how work actually gets done day to day.'
-      },
-      data: {
-        label: 'Data, evaluation, & evidence',
-        sub: 'Collecting, cleaning, and using information so leadership and staff can make decisions.'
-      },
-      partnerships: {
-        label: 'Partnerships & alignment',
-        sub: 'Getting tribal, Native, public, and private partners rowing in the same direction.'
-      },
-      funding: {
-        label: 'Funding & sustainability',
-        sub: 'Resources, reporting, and structures that can last beyond one grant cycle.'
-      }
+      governance: { label: 'Strategy & governance', sub: 'Long-term direction, structures, alignment across leaders and decision-makers.' },
+      operations: { label: 'Programs & operations', sub: 'Roles, processes, handoffs, and how work actually gets done day to day.' },
+      data: { label: 'Data, evaluation, & evidence', sub: 'Collecting, cleaning, and using information so leadership and staff can make decisions.' },
+      partnerships: { label: 'Partnerships & alignment', sub: 'Getting tribal, Native, public, and private partners rowing in the same direction.' },
+      funding: { label: 'Funding & sustainability', sub: 'Resources, reporting, and structures that can last beyond one grant cycle.' }
     },
     'tribal-gov': {
-      governance: {
-        label: 'Nation-level strategy & governance',
-        sub: 'Council priorities, codes, constitutions, and structures that shape long-term direction.'
-      },
-      operations: {
-        label: 'Departments & programs on the ground',
-        sub: 'How departments coordinate, hand off work, and deliver services to citizens.'
-      },
-      data: {
-        label: 'Nation data, evaluation, & evidence',
-        sub: 'Tribal data, program reports, and impact stories that support council and administration decisions.'
-      },
-      partnerships: {
-        label: 'Intergovernmental & partner alignment',
-        sub: 'Working with federal, state, philanthropic, and private partners on tribal terms.'
-      },
-      funding: {
-        label: 'Nation funding & sustainability',
-        sub: 'Balancing federal dollars, own-source revenue, enterprises, and grants over time.'
-      }
+      governance: { label: 'Nation-level strategy & governance', sub: 'Council priorities, codes, constitutions, and structures that shape long-term direction.' },
+      operations: { label: 'Departments & programs on the ground', sub: 'How departments coordinate, hand off work, and deliver services to citizens.' },
+      data: { label: 'Nation data, evaluation, & evidence', sub: 'Tribal data, program reports, and impact stories that support council and administration decisions.' },
+      partnerships: { label: 'Intergovernmental & partner alignment', sub: 'Working with federal, state, philanthropic, and private partners on tribal terms.' },
+      funding: { label: 'Nation funding & sustainability', sub: 'Balancing federal dollars, own-source revenue, enterprises, and grants over time.' }
     },
     'native-entity': {
-      governance: {
-        label: 'Enterprise strategy & governance',
-        sub: 'Board structures, decision rights, and alignment with tribal/shareholder priorities.'
-      },
-      operations: {
-        label: 'Enterprise operations & portfolio',
-        sub: 'Business lines, management structures, and how work moves between teams and subsidiaries.'
-      },
-      data: {
-        label: 'Performance & reporting data',
-        sub: 'Financial and operational data needed by boards, executives, and tribal/shareholder governance.'
-      },
-      partnerships: {
-        label: 'Business partnerships & joint ventures',
-        sub: 'How partners are selected, structured, and held accountable across the enterprise.'
-      },
-      funding: {
-        label: 'Capital, risk, & balance sheet',
-        sub: 'Debt, equity, reserves, and risk management to support growth and resilience.'
-      }
+      governance: { label: 'Enterprise strategy & governance', sub: 'Board structures, decision rights, and alignment with tribal or shareholder priorities.' },
+      operations: { label: 'Enterprise operations & portfolio', sub: 'Business lines, management structures, and how work moves between teams and subsidiaries.' },
+      data: { label: 'Performance & reporting data', sub: 'Financial and operational data needed by boards, executives, and tribal or shareholder governance.' },
+      partnerships: { label: 'Business partnerships & joint ventures', sub: 'How partners are selected, structured, and held accountable across the enterprise.' },
+      funding: { label: 'Capital, risk, & balance sheet', sub: 'Debt, equity, reserves, and risk management to support growth and resilience.' }
     },
     'native-org': {
-      governance: {
-        label: 'Mission & governance',
-        sub: 'Board roles, decision-making, and strategy for a Native-led nonprofit or organization.'
-      },
-      operations: {
-        label: 'Programs, staff, & operations',
-        sub: 'Workflows, role clarity, and systems that keep the team from burning out.'
-      },
-      data: {
-        label: 'Story, data, & evaluation',
-        sub: 'Ways of showing impact that honor community and satisfy funders.'
-      },
-      partnerships: {
-        label: 'Collaborations & coalitions',
-        sub: 'How you show up in coalitions, tables, and cross-org work without being stretched thin.'
-      },
-      funding: {
-        label: 'Funding model & stability',
-        sub: 'Grants, contracts, and revenue streams that can actually sustain the work.'
-      }
+      governance: { label: 'Mission & governance', sub: 'Board roles, decision-making, and strategy for a Native-led nonprofit or organization.' },
+      operations: { label: 'Programs, staff, & operations', sub: 'Workflows, role clarity, and systems that keep the team from burning out.' },
+      data: { label: 'Story, data, & evaluation', sub: 'Ways of showing impact that honor community and satisfy funders.' },
+      partnerships: { label: 'Collaborations & coalitions', sub: 'How you show up in coalitions, tables, and cross-org work without being stretched thin.' },
+      funding: { label: 'Funding model & stability', sub: 'Grants, contracts, and revenue streams that can actually sustain the work.' }
     },
     'non-native-org': {
-      governance: {
-        label: 'Internal governance for tribal work',
-        sub: 'Policies, approvals, and structures that shape how you show up in Indian Country.'
-      },
-      operations: {
-        label: 'Program design & delivery in Indian Country',
-        sub: 'How your teams design and implement work that touches Native nations or communities.'
-      },
-      data: {
-        label: 'Data & evaluation with tribal partners',
-        sub: 'How data is collected, shared, and governed when it involves tribal citizens or lands.'
-      },
-      partnerships: {
-        label: 'Partnerships with Native nations & orgs',
-        sub: 'How you initiate, maintain, and adjust relationships with tribal and Native-led partners.'
-      },
-      funding: {
-        label: 'Funding & resourcing for tribal work',
-        sub: 'How dollars move to Native partners and how requirements are set and enforced.'
-      }
+      governance: { label: 'Internal governance for tribal work', sub: 'Policies, approvals, and structures that shape how you show up in Indian Country.' },
+      operations: { label: 'Program design & delivery in Indian Country', sub: 'How your teams design and implement work that touches Native nations or communities.' },
+      data: { label: 'Data & evaluation with tribal partners', sub: 'How data is collected, shared, and governed when it involves tribal citizens or lands.' },
+      partnerships: { label: 'Partnerships with Native nations & orgs', sub: 'How you initiate, maintain, and adjust relationships with tribal and Native-led partners.' },
+      funding: { label: 'Funding & resourcing for tribal work', sub: 'How dollars move to Native partners and how requirements are set and enforced.' }
     },
     'other': {
-      governance: {
-        label: 'Institutional strategy & governance',
-        sub: 'How leadership, boards, and councils make decisions about Native-serving work.'
-      },
-      operations: {
-        label: 'Programs & services for Native communities',
-        sub: 'How teams coordinate to deliver education, health, or other services.'
-      },
-      data: {
-        label: 'Data & evaluation across the institution',
-        sub: 'How information about Native-serving work is collected, used, and shared.'
-      },
-      partnerships: {
-        label: 'Partnerships with Native nations & orgs',
-        sub: 'How collaboration with Native partners is structured and governed.'
-      },
-      funding: {
-        label: 'Funding & long-term viability',
-        sub: 'How your Native-serving work is resourced and protected over time.'
-      }
+      governance: { label: 'Institutional strategy & governance', sub: 'How leadership, boards, and councils make decisions about Native-serving work.' },
+      operations: { label: 'Programs & services for Native communities', sub: 'How teams coordinate to deliver education, health, or other services.' },
+      data: { label: 'Data & evaluation across the institution', sub: 'How information about Native-serving work is collected, used, and shared.' },
+      partnerships: { label: 'Partnerships with Native nations & orgs', sub: 'How collaboration with Native partners is structured and governed.' },
+      funding: { label: 'Funding & long-term viability', sub: 'How your Native-serving work is resourced and protected over time.' }
     }
   };
 
   const stateOptionCopy = {
     default: {
-      crowded: {
-        label: 'Too much at once',
-        sub: 'There\'s a long list of needs and opportunities, but not enough structure to sort and sequence.'
-      },
-      stalled: {
-        label: 'Stalled momentum',
-        sub: 'Plans or resolutions exist, but follow-through is uneven or stalled.'
-      },
-      capacity: {
-        label: 'Stretched thin',
-        sub: 'People are carrying multiple roles; new work would overload staff unless something changes.'
-      },
-      invisible: {
-        label: 'Invisible impact',
-        sub: 'Good work is happening, but stories, data, or outcomes aren\'t visible to decision-makers.'
-      },
-      building: {
-        label: 'Starting fresh',
-        sub: 'You\'re building a new program, initiative, or entity and want to set it up right from the beginning.'
-      }
+      crowded: { label: 'Too much at once', sub: 'There\'s a long list of needs and opportunities, but not enough structure to sort and sequence.' },
+      stalled: { label: 'Stalled momentum', sub: 'Plans or resolutions exist, but follow-through is uneven or stalled.' },
+      capacity: { label: 'Stretched thin', sub: 'People are carrying multiple roles; new work would overload staff unless something changes.' },
+      invisible: { label: 'Invisible impact', sub: 'Good work is happening, but stories, data, or outcomes aren\'t visible to decision-makers.' },
+      building: { label: 'Starting fresh', sub: 'You\'re building a new program, initiative, or entity and want to set it up right from the beginning.' }
     },
     'tribal-gov': {
-      crowded: {
-        label: 'Competing Nation priorities',
-        sub: 'Council, departments, and enterprises all have needs, but there isn’t a clear, shared sequence.'
-      },
-      stalled: {
-        label: 'Resolutions without traction',
-        sub: 'Resolutions, plans, or codes exist, but the work to implement them is uneven or delayed.'
-      },
-      capacity: {
-        label: 'Staff and leaders overloaded',
-        sub: 'The same people are on every committee, task force, and crisis response.'
-      },
-      invisible: {
-        label: 'Under-recognized Nation impact',
-        sub: 'The community feels the work, but outside partners or funders don’t fully see the results.'
-      },
-      building: {
-        label: 'New initiative for the Nation',
-        sub: 'You’re standing up a new office, program, or entity and want to design it well from the start.'
-      }
+      crowded: { label: 'Competing Nation priorities', sub: 'Council, departments, and enterprises all have needs, but there isn\'t a clear, shared sequence.' },
+      stalled: { label: 'Resolutions without traction', sub: 'Resolutions, plans, or codes exist, but the work to implement them is uneven or delayed.' },
+      capacity: { label: 'Staff and leaders overloaded', sub: 'The same people are on every committee, task force, and crisis response.' },
+      invisible: { label: 'Under-recognized Nation impact', sub: 'The community feels the work, but outside partners or funders don\'t fully see the results.' },
+      building: { label: 'New initiative for the Nation', sub: 'You\'re standing up a new office, program, or entity and want to design it well from the start.' }
     },
     'native-entity': {
-      crowded: {
-        label: 'Crowded enterprise agenda',
-        sub: 'Multiple projects, deals, and priorities are in play without a clear sequence across the portfolio.'
-      },
-      stalled: {
-        label: 'Plans that don’t move',
-        sub: 'Strategic plans or board directives exist, but implementation is inconsistent across units.'
-      },
-      capacity: {
-        label: 'Thin management bandwidth',
-        sub: 'Key executives and managers are stretched across too many responsibilities.'
-      },
-      invisible: {
-        label: 'Impact not visible to owners',
-        sub: 'Tribal citizens or shareholders aren’t seeing or hearing a clear story about enterprise performance.'
-      },
-      building: {
-        label: 'New venture or line of business',
-        sub: 'You’re starting or acquiring something new and want a solid foundation from day one.'
-      }
+      crowded: { label: 'Crowded enterprise agenda', sub: 'Multiple projects, deals, and priorities are in play without a clear sequence across the portfolio.' },
+      stalled: { label: 'Plans that don\'t move', sub: 'Strategic plans or board directives exist, but implementation is inconsistent across units.' },
+      capacity: { label: 'Thin management bandwidth', sub: 'Key executives and managers are stretched across too many responsibilities.' },
+      invisible: { label: 'Impact not visible to owners', sub: 'Tribal citizens or shareholders aren\'t seeing or hearing a clear story about enterprise performance.' },
+      building: { label: 'New venture or line of business', sub: 'You\'re starting or acquiring something new and want a solid foundation from day one.' }
     },
     'native-org': {
-      crowded: {
-        label: 'Too many priorities for the team',
-        sub: 'The organization is saying “yes” to a lot, and staff are juggling competing demands.'
-      },
-      stalled: {
-        label: 'Good ideas stuck in draft',
-        sub: 'Strategic plans, proposals, or new programs keep getting deferred or half-implemented.'
-      },
-      capacity: {
-        label: 'Core staff burnt or stretched',
-        sub: 'A small group of people quietly holds most of the work and institutional memory.'
-      },
-      invisible: {
-        label: 'Impact hard to show',
-        sub: 'The community knows your value, but the story and data are hard to pull together for others.'
-      },
-      building: {
-        label: 'New Native-led effort',
-        sub: 'You’re launching a new program, collective, or organization and want to start with intention.'
-      }
+      crowded: { label: 'Too many priorities for the team', sub: 'The organization is saying "yes" to a lot, and staff are juggling competing demands.' },
+      stalled: { label: 'Good ideas stuck in draft', sub: 'Strategic plans, proposals, or new programs keep getting deferred or half-implemented.' },
+      capacity: { label: 'Core staff burnt or stretched', sub: 'A small group of people quietly holds most of the work and institutional memory.' },
+      invisible: { label: 'Impact hard to show', sub: 'The community knows your value, but the story and data are hard to pull together for others.' },
+      building: { label: 'New Native-led effort', sub: 'You\'re launching a new program, collective, or organization and want to start with intention.' }
     },
     'non-native-org': {
-      crowded: {
-        label: 'Too many tribal-related asks',
-        sub: 'Multiple initiatives, grants, or mandates involve tribes, but there isn’t a coherent internal strategy.'
-      },
-      stalled: {
-        label: 'Partnerships stuck in “talk” mode',
-        sub: 'Conversations with Native nations or orgs are happening, but agreements or action lag behind.'
-      },
-      capacity: {
-        label: 'Limited internal tribal capacity',
-        sub: 'Only a few people understand tribal context, and they’re stretched across everything.'
-      },
-      invisible: {
-        label: 'Impact unclear to Native partners',
-        sub: 'Your reports and stories don’t fully reflect what tribal partners say matters on the ground.'
-      },
-      building: {
-        label: 'New work in Indian Country',
-        sub: 'You’re starting or expanding work with tribes and want to design it in a better way from the beginning.'
-      }
+      crowded: { label: 'Too many tribal-related asks', sub: 'Multiple initiatives, grants, or mandates involve tribes, but there isn\'t a coherent internal strategy.' },
+      stalled: { label: 'Partnerships stuck in "talk" mode', sub: 'Conversations with Native nations or orgs are happening, but agreements or action lag behind.' },
+      capacity: { label: 'Limited internal tribal capacity', sub: 'Only a few people understand tribal context, and they\'re stretched across everything.' },
+      invisible: { label: 'Impact unclear to Native partners', sub: 'Your reports and stories don\'t fully reflect what tribal partners say matters on the ground.' },
+      building: { label: 'New work in Indian Country', sub: 'You\'re starting or expanding work with tribes and want to design it in a better way from the beginning.' }
     },
     'other': {
-      crowded: {
-        label: 'Competing institutional priorities',
-        sub: 'Native-serving work is just one of many priorities without a clear place in the overall agenda.'
-      },
-      stalled: {
-        label: 'Initiatives stuck mid-stream',
-        sub: 'Commitments were made, but systems and follow-through haven’t fully materialized.'
-      },
-      capacity: {
-        label: 'Overextended Native-serving teams',
-        sub: 'The people closest to Native communities are carrying too much without enough institutional support.'
-      },
-      invisible: {
-        label: 'Native-serving work not visible',
-        sub: 'Good work is happening inside the institution but isn’t well understood by leadership or peers.'
-      },
-      building: {
-        label: 'New Native-serving effort',
-        sub: 'You’re building a new program, center, or partnership focused on Native communities.'
-      }
+      crowded: { label: 'Competing institutional priorities', sub: 'Native-serving work is just one of many priorities without a clear place in the overall agenda.' },
+      stalled: { label: 'Initiatives stuck mid-stream', sub: 'Commitments were made, but systems and follow-through haven\'t fully materialized.' },
+      capacity: { label: 'Overextended Native-serving teams', sub: 'The people closest to Native communities are carrying too much without enough institutional support.' },
+      invisible: { label: 'Native-serving work not visible', sub: 'Good work is happening inside the institution but isn\'t well understood by leadership or peers.' },
+      building: { label: 'New Native-serving effort', sub: 'You\'re building a new program, center, or partnership focused on Native communities.' }
     }
   };
 
@@ -1611,18 +1563,10 @@
     const fq = focusQuestionCopy[orgKey] || focusQuestionCopy.default;
     const sq = stateQuestionCopy[orgKey] || stateQuestionCopy.default;
 
-    if (focusQuestionTitleEl && fq.title) {
-      focusQuestionTitleEl.textContent = fq.title;
-    }
-    if (focusQuestionHelpEl && fq.help) {
-      focusQuestionHelpEl.textContent = fq.help;
-    }
-    if (stateQuestionTitleEl && sq.title) {
-      stateQuestionTitleEl.textContent = sq.title;
-    }
-    if (stateQuestionHelpEl && sq.help) {
-      stateQuestionHelpEl.textContent = sq.help;
-    }
+    if (focusQuestionTitleEl && fq.title) focusQuestionTitleEl.textContent = fq.title;
+    if (focusQuestionHelpEl && fq.help) focusQuestionHelpEl.textContent = fq.help;
+    if (stateQuestionTitleEl && sq.title) stateQuestionTitleEl.textContent = sq.title;
+    if (stateQuestionHelpEl && sq.help) stateQuestionHelpEl.textContent = sq.help;
 
     const focusSet = focusOptionCopy[orgKey] || focusOptionCopy.default;
     ['governance','operations','data','partnerships','funding'].forEach(function(key) {
@@ -1643,57 +1587,51 @@
     });
   }
 
-  /* ========================================
+/* ========================================
      HELPER FUNCTIONS
      ======================================== */
-
-  // Get header height for scroll offset
   function getHeaderHeight() {
     var header = root.querySelector('.icd-header');
     return header ? header.offsetHeight + 16 : 80;
   }
 
-  // Smooth scroll with header offset
   function scrollToElement(el) {
     if (!el) return;
     var headerOffset = getHeaderHeight();
     var elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
     var offsetPosition = elementPosition - headerOffset;
-
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: 'smooth'
-    });
+    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
   }
 
   function updateProgress() {
-    var answered = questions.filter(function(q) {
-      return selections[q];
-    }).length;
+    var answered = questions.filter(function(q) { return selections[q]; }).length;
+    var allAnswered = answered === totalQuestions;
 
     if (progressText) {
       progressText.textContent = answered + ' of ' + totalQuestions + ' questions answered';
     }
 
-    if (progressBarFill) {
-      var pct = (answered / totalQuestions) * 100;
-      progressBarFill.style.width = pct + '%';
+    if (progressHint) {
+      progressHint.textContent = allAnswered 
+        ? 'Ready! Click "See your snapshot" below.'
+        : 'Answer all three questions to see your snapshot.';
     }
 
-    // Update ARIA on progress bar
+    if (progressBarFill) {
+      progressBarFill.style.width = (answered / totalQuestions) * 100 + '%';
+    }
+
     if (progressBar) {
       progressBar.setAttribute('aria-valuenow', answered);
     }
 
     if (submitBtn) {
-      submitBtn.disabled = answered !== totalQuestions;
+      submitBtn.disabled = !allAnswered;
     }
   }
 
   function clearResult() {
-    if (resultEl) {
-      resultEl.innerHTML = '';
-    }
+    if (resultEl) resultEl.innerHTML = '';
   }
 
   function updateRadioGroupA11y(questionKey) {
@@ -1705,19 +1643,11 @@
       var isSelected = o.classList.contains('selected');
       o.setAttribute('aria-checked', isSelected ? 'true' : 'false');
 
-      // First option or selected option gets tabindex 0
       if (isSelected) {
         o.setAttribute('tabindex', '0');
       } else {
-        // If nothing selected, first gets tabindex 0
-        var anySelected = groupOptions.some(function(opt) {
-          return opt.classList.contains('selected');
-        });
-        if (!anySelected && idx === 0) {
-          o.setAttribute('tabindex', '0');
-        } else if (!isSelected) {
-          o.setAttribute('tabindex', '-1');
-        }
+        var anySelected = groupOptions.some(function(opt) { return opt.classList.contains('selected'); });
+        o.setAttribute('tabindex', (!anySelected && idx === 0) ? '0' : '-1');
       }
     });
   }
@@ -1737,8 +1667,7 @@
   }
 
   function updateBackButton() {
-    if (!backBtn) return;
-    backBtn.disabled = currentStepIndex === 0;
+    if (backBtn) backBtn.disabled = currentStepIndex === 0;
   }
 
   function goToStep(index) {
@@ -1747,25 +1676,16 @@
     currentStepIndex = index;
 
     questions.forEach(function(q, idx) {
-      if (idx === currentStepIndex) {
-        showQuestion(q);
-      } else {
-        hideQuestion(q);
-      }
+      if (idx === currentStepIndex) showQuestion(q);
+      else hideQuestion(q);
     });
 
     updateBackButton();
-
-    // Scroll to form with header offset
-    if (form) {
-      scrollToElement(form);
-    }
+    if (form) scrollToElement(form);
   }
 
   function updateHashFromSelections() {
-    var answered = questions.filter(function(q) {
-      return selections[q];
-    }).length;
+    var answered = questions.filter(function(q) { return selections[q]; }).length;
 
     if (!answered) {
       if (window.history && window.history.replaceState) {
@@ -1785,7 +1705,6 @@
     }
   }
 
-
   function applySelectionsFromParams() {
     var params = new URLSearchParams(window.location.search);
     var highestAnsweredIndex = -1;
@@ -1793,7 +1712,6 @@
     questions.forEach(function(q, idx) {
       var val = params.get(q);
       if (val) {
-        // Validate that the value exists in our options
         var validOption = options.find(function(o) {
           return o.getAttribute('data-question') === q && o.getAttribute('data-value') === val;
         });
@@ -1804,13 +1722,11 @@
       }
     });
 
-    // Clear UI first
     options.forEach(function(o) {
       o.classList.remove('selected');
       o.setAttribute('aria-checked', 'false');
     });
 
-    // Re-apply valid selections from URL
     questions.forEach(function(q) {
       var val = selections[q];
       if (!val) return;
@@ -1819,504 +1735,500 @@
         return o.getAttribute('data-question') === q && o.getAttribute('data-value') === val;
       });
 
-      if (btn) {
-        btn.classList.add('selected');
-      }
-
+      if (btn) btn.classList.add('selected');
       updateRadioGroupA11y(q);
     });
 
-    // Apply org-specific copy after org has potentially been restored
     applyOrgSpecificCopy();
 
-    // Go to the appropriate step
-    if (highestAnsweredIndex === -1) {
-      goToStep(0);
-    } else if (highestAnsweredIndex < totalQuestions - 1) {
-      // If not all answered, go to next unanswered
-      goToStep(highestAnsweredIndex + 1);
-    } else {
-      // All answered, stay on last question
-      goToStep(highestAnsweredIndex);
-    }
+    if (highestAnsweredIndex === -1) goToStep(0);
+    else if (highestAnsweredIndex < totalQuestions - 1) goToStep(highestAnsweredIndex + 1);
+    else goToStep(highestAnsweredIndex);
 
     updateProgress();
   }
 
+  function escapeHtml(text) {
+    if (!text) return '';
+    var div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  /* ========================================
+     ORG-SPECIFIC CTA COPY
+     ======================================== */
+  const ctaCopy = {
+    'tribal-gov': 'If this sounds like where the Nation is right now,',
+    'native-entity': 'If this sounds like where your enterprise is right now,',
+    'native-org': 'If this sounds like where your organization is right now,',
+    'non-native-org': 'If this sounds like your situation,',
+    'other': 'If this sounds like where your institution is right now,',
+    'default': 'If this sounds close to your context,'
+  };
+
   /* ========================================
      PROFILE DEFINITIONS
+     ======================================== */
+  const profiles = {
+    // TRIBAL NATION
+    'tribal-gov|governance': {
+      title: 'Governance work with a full plate',
+      tagline: 'You\'re carrying core governmental responsibilities while trying to modernize structures and position the Nation for what\'s next.',
+      bullets: [
+        'Multiple priorities are competing for council and leadership attention.',
+        'Existing codes, resolutions, or plans don\'t fully match how work actually happens on the ground.',
+        'There\'s a desire for long-term stability across elections and leadership changes.'
+      ],
+      icdAreas: [
+        'Facilitated strategy sessions that translate values and priorities into a concrete, sequenced roadmap.',
+        'Governance reviews that align constitutions, codes, and structures with the work your Nation is actually doing.',
+        'Implementation support that respects political realities while still moving work forward.'
+      ]
+    },
+    'tribal-gov|operations': {
+      title: 'Programs that need clearer structure',
+      tagline: 'The Nation is doing a lot—but the way work is organized may be getting in the way of consistent follow-through.',
+      bullets: [
+        'Staff are juggling overlapping roles across programs and departments.',
+        'Citizens may experience gaps or duplication in services.',
+        'Leaders want to see progress but don\'t always have a clear picture of bottlenecks.'
+      ],
+      icdAreas: [
+        'Process mapping across departments to clarify handoffs, responsibilities, and decision points.',
+        'Redesign of program structures so work is sustainable with the staff you actually have.',
+        'Lightweight tracking tools so leadership can see how work is moving without overburdening staff.'
+      ]
+    },
+    'tribal-gov|data': {
+      title: 'Making information actually usable',
+      tagline: 'Data exists in different systems, but it\'s not yet telling the full story of what the Nation is accomplishing.',
+      bullets: [
+        'Reporting obligations pull staff time without always feeding local decision-making.',
+        'Different departments may track similar information in different ways.',
+        'Leaders want evidence to support investments, negotiations, or community communication.'
+      ],
+      icdAreas: [
+        'Data readiness assessments that respect sovereignty and community context.',
+        'Design of simple, sovereignty-aligned dashboards and reporting tools.',
+        'Support translating data into narratives for council, citizens, and partners.'
+      ]
+    },
+    'tribal-gov|partnerships': {
+      title: 'Navigating complex partner relationships',
+      tagline: 'The Nation is working with multiple external partners, and coordination is becoming as much work as the work itself.',
+      bullets: [
+        'Federal, state, and nonprofit partners each have their own timelines and requirements.',
+        'Partnership agreements may not fully reflect tribal priorities or decision-making processes.',
+        'Staff spend significant time managing relationships rather than advancing programs.'
+      ],
+      icdAreas: [
+        'Partnership audits to clarify what\'s working and what needs renegotiation.',
+        'Co-development of MOUs and agreements that center tribal governance.',
+        'Coordination structures that reduce burden on tribal staff while maintaining relationships.'
+      ]
+    },
+    'tribal-gov|funding': {
+      title: 'Building sustainable revenue and funding',
+      tagline: 'The Nation needs funding structures that support long-term goals, not just this year\'s grant cycle.',
+      bullets: [
+        'Heavy reliance on federal or grant funding creates uncertainty.',
+        'Reporting requirements consume staff time that could go toward programs.',
+        'There\'s interest in diversifying revenue but limited capacity to explore options.'
+      ],
+      icdAreas: [
+        'Funding landscape analysis to identify alignment between priorities and available resources.',
+        'Grant management improvements that reduce administrative burden.',
+        'Long-term financial planning that accounts for tribal priorities and sovereignty.'
+      ]
+    },
+
+    // NATIVE ENTITY ENTERPRISE
+    'native-entity|governance': {
+      title: 'Enterprise governance at a growth point',
+      tagline: 'Your enterprise is maturing, and governance structures need to keep pace with complexity.',
+      bullets: [
+        'Board composition or decision-making may not reflect current scale.',
+        'Relationships between enterprise leadership and tribal or shareholder governance need clarity.',
+        'Strategic planning happens, but follow-through and accountability vary.'
+      ],
+      icdAreas: [
+        'Governance reviews that clarify board roles, executive authority, and reporting lines.',
+        'Strategic alignment between enterprise goals and tribal or shareholder priorities.',
+        'Implementation rhythms that keep leadership accountable without micromanaging.'
+      ]
+    },
+    'native-entity|operations': {
+      title: 'Balancing mission and margin',
+      tagline: 'You\'re responsible for a business or portfolio that has to perform financially and deliver for Native shareholders or citizens.',
+      bullets: [
+        'Operational complexity is growing across sites, subsidiaries, or lines of business.',
+        'Leadership wants clearer visibility into performance and risk across the portfolio.',
+        'There\'s ongoing pressure to deliver both financial returns and community impact.'
+      ],
+      icdAreas: [
+        'Clarifying roles and decision rights across boards, executives, and management.',
+        'Designing lightweight performance dashboards that center the indicators you actually care about.',
+        'Supporting strategic planning that ties enterprise decisions back to community outcomes.'
+      ]
+    },
+    'native-entity|data': {
+      title: 'Using data to drive enterprise performance',
+      tagline: 'You have data across the enterprise, but it\'s not yet driving decisions the way it could.',
+      bullets: [
+        'Different business units track performance in different ways.',
+        'Leadership wants a clearer picture of what\'s working and what isn\'t.',
+        'Reporting to tribal government or shareholders could be stronger.'
+      ],
+      icdAreas: [
+        'Data inventory and assessment across business units.',
+        'Dashboard design that gives leadership actionable visibility.',
+        'Reporting frameworks that satisfy governance requirements and inform strategy.'
+      ]
+    },
+    'native-entity|partnerships': {
+      title: 'Managing complex business relationships',
+      tagline: 'Your enterprise works with multiple partners, and those relationships need intentional management.',
+      bullets: [
+        'Joint ventures or contracts may not be delivering expected value.',
+        'Partner relationships require significant leadership attention.',
+        'There\'s interest in new partnerships but limited capacity to evaluate them.'
+      ],
+      icdAreas: [
+        'Partnership portfolio review to assess current relationships.',
+        'Due diligence support for new opportunities.',
+        'Negotiation and structuring assistance that protects enterprise interests.'
+      ]
+    },
+    'native-entity|funding': {
+      title: 'Strengthening enterprise financial position',
+      tagline: 'Your enterprise needs financial structures that support growth and resilience.',
+      bullets: [
+        'Capital needs exceed current resources or borrowing capacity.',
+        'Financial planning is reactive rather than strategic.',
+        'There\'s interest in new financing structures but limited expertise internally.'
+      ],
+      icdAreas: [
+        'Financial planning and modeling for growth scenarios.',
+        'Capital strategy—identifying appropriate financing options.',
+        'Investor or lender relationship support.'
+      ]
+    },
+
+    // NATIVE-LED ORG
+    'native-org|governance': {
+      title: 'Native-led organization finding its footing',
+      tagline: 'Your organization is doing important work, and now it\'s time to strengthen the structures that will help it last.',
+      bullets: [
+        'Board and staff roles may overlap or lack clear boundaries.',
+        'Strategic direction exists informally but isn\'t fully documented.',
+        'Growth is creating pressure to formalize without losing flexibility.'
+      ],
+      icdAreas: [
+        'Governance clarification—board roles, decision rights, and accountability structures.',
+        'Strategic planning that captures your mission without over-engineering.',
+        'Documentation and policies that fit your culture and stage of growth.'
+      ]
+    },
+    'native-org|operations': {
+      title: 'Native-led work outgrowing informal systems',
+      tagline: 'Your team is doing powerful work with limited infrastructure—and growth is starting to expose the seams.',
+      bullets: [
+        'A small group of people hold most of the institutional knowledge.',
+        'New staff, board members, or partners need clearer on-ramps into the work.',
+        'Funders are supportive but asking for more structure and proof of impact.'
+      ],
+      icdAreas: [
+        'Clarifying roles, decision-making, and basic operating rhythms that fit your culture.',
+        'Developing practical tools—checklists, templates, and workplans—for staff and leadership.',
+        'Aligning program models and evaluation so future growth feels intentional, not reactive.'
+      ]
+    },
+    'native-org|data': {
+      title: 'Telling the story of Native-led work',
+      tagline: 'You know your work is making a difference. The challenge is capturing it in ways that honor community and satisfy funders.',
+      bullets: [
+        'Stories from community are strong, but coding or aggregating them takes time.',
+        'Reporting feels like a separate task instead of a natural extension of the work.',
+        'There\'s a mismatch between what funders ask for and what actually matters locally.'
+      ],
+      icdAreas: [
+        'Designing evaluation approaches that start from community definitions of success.',
+        'Building right-sized data practices that staff can realistically maintain.',
+        'Translating local impact into funder-ready language without losing the heart of the work.'
+      ]
+    },
+    'native-org|partnerships': {
+      title: 'Strengthening collaborative relationships',
+      tagline: 'You\'re working alongside other organizations and want those partnerships to be generative, not extractive.',
+      bullets: [
+        'Partners may have different definitions of success or accountability.',
+        'Coordination takes time away from direct community work.',
+        'There\'s a desire to lead collaborations rather than just participate in them.'
+      ],
+      icdAreas: [
+        'Partnership assessment to identify what\'s working and what needs adjustment.',
+        'Co-designing collaboration structures that center Native leadership.',
+        'Building internal capacity to manage partnerships without overextending staff.'
+      ]
+    },
+    'native-org|funding': {
+      title: 'Moving beyond grant-to-grant survival',
+      tagline: 'Your organization does important work, but the funding model isn\'t sustainable yet.',
+      bullets: [
+        'Most revenue comes from one or two sources.',
+        'Grant cycles drive program decisions more than strategy does.',
+        'There\'s interest in earned revenue or reserves but limited capacity to pursue them.'
+      ],
+      icdAreas: [
+        'Financial sustainability planning that aligns with your mission.',
+        'Diversification strategy—identifying realistic alternative revenue streams.',
+        'Grant management support that reduces burden and improves success rates.'
+      ]
+    },
+
+    // NON-NATIVE ORG
+    'non-native-org|governance': {
+      title: 'Building governance for tribal partnership',
+      tagline: 'Your organization wants to partner well with tribes, and that starts with how you\'re structured.',
+      bullets: [
+        'Internal governance doesn\'t account for tribal consultation or consent.',
+        'Decision-making timelines don\'t align with tribal processes.',
+        'There\'s interest in deeper partnership but uncertainty about how to structure it.'
+      ],
+      icdAreas: [
+        'Governance assessment for tribal partnership readiness.',
+        'Policy development for tribal consultation and engagement.',
+        'Training for leadership and staff on tribal sovereignty and governance.'
+      ]
+    },
+    'non-native-org|operations': {
+      title: 'Operations that respect tribal context',
+      tagline: 'Your programs touch tribal communities, and operations need to reflect that reality.',
+      bullets: [
+        'Program design may not fully account for tribal priorities or processes.',
+        'Staff may lack training on working effectively in Indian Country.',
+        'Feedback loops from tribal partners are informal or inconsistent.'
+      ],
+      icdAreas: [
+        'Program review through a tribal partnership lens.',
+        'Staff training on tribal sovereignty, governance, and cultural context.',
+        'Feedback and accountability structures that center tribal voice.'
+      ]
+    },
+    'non-native-org|data': {
+      title: 'Data practices that respect tribal sovereignty',
+      tagline: 'You collect data that involves tribal communities, and your practices need to reflect tribal data sovereignty.',
+      bullets: [
+        'Data collection may not account for tribal consent or ownership.',
+        'Reporting doesn\'t flow back to tribal partners in useful ways.',
+        'There\'s uncertainty about how to handle tribal data appropriately.'
+      ],
+      icdAreas: [
+        'Data sovereignty assessment and policy development.',
+        'Co-designing data sharing agreements with tribal partners.',
+        'Training on tribal data sovereignty principles and practices.'
+      ]
+    },
+    'non-native-org|partnerships': {
+      title: 'Partnering with Native nations in a better way',
+      tagline: 'You\'re trying to work alongside Native nations and organizations and want to do it with more clarity, respect, and alignment.',
+      bullets: [
+        'There\'s interest or mandate to partner with tribes, but the "how" is not fully clear.',
+        'Internal processes or timelines don\'t always line up with tribal governance or community priorities.',
+        'You want to build trust and long-term relationships, not one-off transactions.'
+      ],
+      icdAreas: [
+        'Orientation and training on sovereignty, governance, and practical partnership design.',
+        'Co-developing partnership frameworks and MOUs that respect Native timelines and decision-making.',
+        'Supporting joint planning sessions where tribal and partner priorities can be aligned honestly.'
+      ]
+    },
+    'non-native-org|funding': {
+      title: 'Funding approaches that support tribal priorities',
+      tagline: 'Your organization funds or resources work in Indian Country and wants to do it more effectively.',
+      bullets: [
+        'Funding mechanisms may not align with tribal timelines or priorities.',
+        'Reporting requirements create burden without building capacity.',
+        'There\'s interest in trust-based approaches but uncertainty about implementation.'
+      ],
+      icdAreas: [
+        'Funding practice review through a tribal lens.',
+        'Redesigning grantmaking or contracting for tribal context.',
+        'Training on trust-based philanthropy and tribal sovereignty.'
+      ]
+    },
+
+    // OTHER
+    'other|governance': {
+      title: 'Governance for a unique institution',
+      tagline: 'Your institution doesn\'t fit neatly into categories, and governance needs to reflect that complexity.',
+      bullets: [
+        'Multiple stakeholders or constituencies have different expectations.',
+        'Governance structures may have evolved organically without clear design.',
+        'There\'s a desire for clarity without losing the flexibility that\'s made you effective.'
+      ],
+      icdAreas: [
+        'Governance mapping to clarify current structures and pain points.',
+        'Stakeholder engagement to align on governance priorities.',
+        'Governance redesign that fits your unique context and mission.'
+      ]
+    },
+    'other|operations': {
+      title: 'Operations for a complex institution',
+      tagline: 'Your institution serves multiple purposes and populations, and operations need to hold that complexity.',
+      bullets: [
+        'Different programs or functions operate somewhat independently.',
+        'Staff wear multiple hats across different parts of the institution.',
+        'There\'s a desire for more coordination without creating bureaucracy.'
+      ],
+      icdAreas: [
+        'Operational assessment across functions and programs.',
+        'Process design that creates coherence without rigidity.',
+        'Role clarification and workload analysis.'
+      ]
+    },
+    'other|data': {
+      title: 'Data for a multi-faceted institution',
+      tagline: 'Your institution generates data across multiple functions, and it\'s not yet working together.',
+      bullets: [
+        'Different parts of the institution track different things in different ways.',
+        'Leadership wants a clearer picture of institutional impact.',
+        'Reporting to funders or stakeholders could be stronger.'
+      ],
+      icdAreas: [
+        'Data inventory across institutional functions.',
+        'Dashboard or reporting design for leadership visibility.',
+        'Evaluation framework that captures institutional impact.'
+      ]
+    },
+    'other|partnerships': {
+      title: 'Navigating a complex partner landscape',
+      tagline: 'Your institution works with many partners, and those relationships need intentional management.',
+      bullets: [
+        'Partners have different expectations and accountability structures.',
+        'Coordination consumes significant staff and leadership time.',
+        'There\'s a desire to be more strategic about which partnerships to prioritize.'
+      ],
+      icdAreas: [
+        'Partnership mapping and assessment.',
+        'Prioritization framework for partnership investment.',
+        'Coordination structures that reduce burden while maintaining relationships.'
+      ]
+    },
+    'other|funding': {
+      title: 'Sustainable funding for a unique institution',
+      tagline: 'Your institution needs funding structures that support your unique mission and model.',
+      bullets: [
+        'Funding comes from multiple sources with different requirements.',
+        'Financial sustainability depends on continued grant success.',
+        'There\'s interest in diversification but limited capacity to pursue it.'
+      ],
+      icdAreas: [
+        'Financial sustainability assessment.',
+        'Diversification planning aligned with mission.',
+        'Grant management and funder relationship support.'
+      ]
+    },
+
+    // FALLBACKS
+    'any|governance': {
+      title: 'Clarifying direction and decision-making',
+      tagline: 'You\'re at a moment where governance, structure, and long-term direction matter as much as any single program.',
+      bullets: [
+        'Different leaders or teams may hold slightly different pictures of the future.',
+        'Existing plans or frameworks don\'t fully reflect what\'s happening now.',
+        'Important decisions risk being delayed or revisited without a shared map.'
+      ],
+      icdAreas: [
+        'Facilitated strategy and governance work that names tradeoffs and choices clearly.',
+        'Documentation that is concise, usable, and grounded in your own language and context.',
+        'Implementation check-ins so strategy doesn\'t die on the shelf.'
+      ]
+    },
+    'any|operations': {
+      title: 'Turning good ideas into repeatable practice',
+      tagline: 'The work is there in pieces; the challenge is stitching it into something that holds under real pressure.',
+      bullets: [
+        'Staff are improvising solutions to gaps that should be solved by structure.',
+        'Community experience can vary depending on who happens to be working that day.',
+        'Internal communication is carrying too much of the weight that systems should carry.'
+      ],
+      icdAreas: [
+        'Mapping how work actually flows today and where it breaks.',
+        'Co-designing processes, tools, and roles with the people who will use them.',
+        'Building operating rhythms—meetings, check-ins, and reporting—that feel helpful, not burdensome.'
+      ]
+    },
+    'any|data': {
+      title: 'Making information work for you, not just funders',
+      tagline: 'There\'s data in the system. The question is how to make it meaningful for your decisions and your story.',
+      bullets: [
+        'Data collection is happening, but lives in separate systems or files.',
+        'Reporting deadlines drive behavior more than internal learning does.',
+        'Leaders want to see a clearer through-line from data to action.'
+      ],
+      icdAreas: [
+        'Inventorying what you already collect before creating anything new.',
+        'Designing simple visual and narrative ways to share insights with staff and leadership.',
+        'Building feedback loops so data shapes how programs evolve over time.'
+      ]
+    },
+    'any|partnerships': {
+      title: 'Aligning people who care about the same outcomes',
+      tagline: 'Multiple organizations are trying to help. The risk is everyone pulling in slightly different directions.',
+      bullets: [
+        'Partnership meetings are full, but next steps and accountability are not always clear.',
+        'Different partners may have different risk tolerances, timelines, and definitions of success.',
+        'Community members may experience "coordination" as one more meeting, not as relief.'
+      ],
+      icdAreas: [
+        'Helping partners name shared outcomes without flattening Native priorities.',
+        'Structuring partnership tables so decisions are made, tracked, and revisited transparently.',
+        'Clarifying what needs to stay with Native-led institutions versus what partners can carry.'
+      ]
+    },
+    'any|funding': {
+      title: 'Building something that lasts beyond one grant',
+      tagline: 'Funding is a tool—not the whole plan. You\'re trying to move from scrambling to sustaining.',
+      bullets: [
+        'Current work is heavily dependent on one or two key funding streams.',
+        'Reporting requirements may be driving more activity than strategy.',
+        'Leadership wants a clearer picture of what it would take to sustain or grow the work.'
+      ],
+      icdAreas: [
+        'Clarifying the core work you want to sustain versus what can remain opportunistic.',
+        'Aligning grant pursuits and partnerships with a longer-term financial picture.',
+        'Designing structures—entities, agreements, or staffing—that can hold growth over time.'
+      ]
+    },
+
+    'default': {
+      title: 'A moment for alignment and structure',
+      tagline: 'You\'re doing important work in Native communities or alongside Native nations, and the next step is tightening how the work is organized and supported.',
+      bullets: [
+        'You\'re carrying real responsibilities with limited time to step back and see the whole picture.',
+        'Pieces of strategy, operations, and data are present, but not yet fully aligned.',
+        'There\'s interest—internally or externally—in doing things in a more intentional, lasting way.'
+      ],
+      icdAreas: [
+        'Listening first to how work is already happening and what people are carrying.',
+        'Co-creating strategy, structures, and tools that fit your context, not a generic template.',
+        'Staying focused on implementation so plans, roles, and data get used in real life.'
+      ]
+    }
+  };
+
+  /* ========================================
+     BUILD PROFILE
      ======================================== */
   function buildProfile() {
     if (!resultEl) return;
 
     var keyOrg = selections.org || 'any';
     var keyFocus = selections.focus || 'governance';
+    var keyState = selections.state || 'crowded';
 
-    var profiles = {
-      // ==================
-      // TRIBAL NATION
-      // ==================
-      'tribal-gov|governance': {
-        title: 'Governance work with a full plate',
-        tagline: 'You\'re carrying core governmental responsibilities while trying to modernize structures and position the Nation for what\'s next.',
-        bullets: [
-          'Multiple priorities are competing for council and leadership attention.',
-          'Existing codes, resolutions, or plans don\'t fully match how work actually happens on the ground.',
-          'There\'s a desire for long-term stability across elections and leadership changes.'
-        ],
-        icdAreas: [
-          'Facilitated strategy sessions that translate values and priorities into a concrete, sequenced roadmap.',
-          'Governance reviews that align constitutions, codes, and structures with the work your Nation is actually doing.',
-          'Implementation support that respects political realities while still moving work forward.'
-        ]
-      },
-      'tribal-gov|operations': {
-        title: 'Programs that need clearer structure',
-        tagline: 'The Nation is doing a lot—but the way work is organized may be getting in the way of consistent follow-through.',
-        bullets: [
-          'Staff are juggling overlapping roles across programs and departments.',
-          'Residents and citizens may experience gaps or duplication in services.',
-          'Leaders want to see progress but don\'t always have a clear picture of bottlenecks.'
-        ],
-        icdAreas: [
-          'Process mapping across departments to clarify handoffs, responsibilities, and decision points.',
-          'Re-design of program structures so work is sustainable with the staff you actually have.',
-          'Lightweight tracking tools so leadership can see how work is moving without overburdening staff.'
-        ]
-      },
-      'tribal-gov|data': {
-        title: 'Making information actually usable',
-        tagline: 'Data exists in different systems, but it\'s not yet telling the full story of what the Nation is accomplishing.',
-        bullets: [
-          'Reporting obligations pull staff time without always feeding local decision-making.',
-          'Different departments may track similar information in different ways.',
-          'Leaders want evidence to support investments, negotiations, or community communication.'
-        ],
-        icdAreas: [
-          'Data readiness assessments that respect sovereignty and community context.',
-          'Design of simple, sovereignty-aligned dashboards and reporting tools.',
-          'Support translating data into narratives for council, citizens, and partners.'
-        ]
-      },
-      'tribal-gov|partnerships': {
-        title: 'Navigating complex partner relationships',
-        tagline: 'The Nation is working with multiple external partners, and coordination is becoming as much work as the work itself.',
-        bullets: [
-          'Federal, state, and nonprofit partners each have their own timelines and requirements.',
-          'Partnership agreements may not fully reflect tribal priorities or decision-making processes.',
-          'Staff spend significant time managing relationships rather than advancing programs.'
-        ],
-        icdAreas: [
-          'Partnership audits to clarify what\'s working and what needs renegotiation.',
-          'Co-development of MOUs and agreements that center tribal governance.',
-          'Coordination structures that reduce burden on tribal staff while maintaining relationships.'
-        ]
-      },
-      'tribal-gov|funding': {
-        title: 'Building sustainable revenue and funding',
-        tagline: 'The Nation needs funding structures that support long-term goals, not just this year\'s grant cycle.',
-        bullets: [
-          'Heavy reliance on federal or grant funding creates uncertainty.',
-          'Reporting requirements consume staff time that could go toward programs.',
-          'There\'s interest in diversifying revenue but limited capacity to explore options.'
-        ],
-        icdAreas: [
-          'Funding landscape analysis to identify alignment between priorities and available resources.',
-          'Grant management improvements that reduce administrative burden.',
-          'Long-term financial planning that accounts for tribal priorities and sovereignty.'
-        ]
-      },
-
-      // ==================
-      // NATIVE-LED ORGS
-      // ==================
-      'native-org|governance': {
-        title: 'Native-led organization finding its footing',
-        tagline: 'Your organization is doing important work, and now it\'s time to strengthen the structures that will help it last.',
-        bullets: [
-          'Board and staff roles may overlap or lack clear boundaries.',
-          'Strategic direction exists informally but isn\'t fully documented.',
-          'Growth is creating pressure to formalize without losing flexibility.'
-        ],
-        icdAreas: [
-          'Governance clarification—board roles, decision rights, and accountability structures.',
-          'Strategic planning that captures your mission without over-engineering.',
-          'Documentation and policies that fit your culture and stage of growth.'
-        ]
-      },
-      'native-org|operations': {
-        title: 'Native-led work outgrowing informal systems',
-        tagline: 'Your team is doing powerful work with limited infrastructure—and growth is starting to expose the seams.',
-        bullets: [
-          'A small group of people hold most of the institutional knowledge.',
-          'New staff, board members, or partners need clearer on-ramps into the work.',
-          'Funders are supportive but asking for more structure and proof of impact.'
-        ],
-        icdAreas: [
-          'Clarifying roles, decision-making, and basic operating rhythms that fit your culture.',
-          'Developing practical tools—checklists, templates, and workplans—for staff and leadership.',
-          'Aligning program models and evaluation so future growth feels intentional, not reactive.'
-        ]
-      },
-      'native-org|data': {
-        title: 'Telling the story of Native-led work',
-        tagline: 'You know your work is making a difference. The challenge is capturing it in ways that honor community and satisfy funders.',
-        bullets: [
-          'Stories from community are strong, but coding or aggregating them takes time.',
-          'Reporting feels like a separate task instead of a natural extension of the work.',
-          'There\'s a mismatch between what funders ask for and what actually matters locally.'
-        ],
-        icdAreas: [
-          'Designing evaluation approaches that start from community definitions of success.',
-          'Building right-sized data practices that staff can realistically maintain.',
-          'Translating local impact into funder-ready language without losing the heart of the work.'
-        ]
-      },
-      'native-org|partnerships': {
-        title: 'Strengthening collaborative relationships',
-        tagline: 'You\'re working alongside other organizations and want those partnerships to be generative, not extractive.',
-        bullets: [
-          'Partners may have different definitions of success or accountability.',
-          'Coordination takes time away from direct community work.',
-          'There\'s a desire to lead collaborations rather than just participate in them.'
-        ],
-        icdAreas: [
-          'Partnership assessment to identify what\'s working and what needs adjustment.',
-          'Co-designing collaboration structures that center Native leadership.',
-          'Building internal capacity to manage partnerships without overextending staff.'
-        ]
-      },
-      'native-org|funding': {
-        title: 'Moving beyond grant-to-grant survival',
-        tagline: 'Your organization does important work, but the funding model isn\'t sustainable yet.',
-        bullets: [
-          'Most revenue comes from one or two sources.',
-          'Grant cycles drive program decisions more than strategy does.',
-          'There\'s interest in earned revenue or reserves but limited capacity to pursue them.'
-        ],
-        icdAreas: [
-          'Financial sustainability planning that aligns with your mission.',
-          'Diversification strategy—identifying realistic alternative revenue streams.',
-          'Grant management support that reduces burden and improves success rates.'
-        ]
-      },
-
-      // ==================
-      // NATIVE ENTITY ENTERPRISE
-      // ==================
-      'native-entity|governance': {
-        title: 'Enterprise governance at a growth point',
-        tagline: 'Your enterprise is maturing, and governance structures need to keep pace with complexity.',
-        bullets: [
-          'Board composition or decision-making may not reflect current scale.',
-          'Relationships between enterprise leadership and tribal/shareholder governance need clarity.',
-          'Strategic planning happens, but follow-through and accountability vary.'
-        ],
-        icdAreas: [
-          'Governance reviews that clarify board roles, executive authority, and reporting lines.',
-          'Strategic alignment between enterprise goals and tribal/shareholder priorities.',
-          'Implementation rhythms that keep leadership accountable without micromanaging.'
-        ]
-      },
-      'native-entity|operations': {
-        title: 'Enterprises balancing mission and margin',
-        tagline: 'You\'re responsible for a business or portfolio that has to perform financially and deliver for Native shareholders or citizens.',
-        bullets: [
-          'Operational complexity is growing across sites, subsidiaries, or lines of business.',
-          'Leadership wants clearer visibility into performance and risk across the portfolio.',
-          'There is ongoing pressure to deliver both financial returns and community impact.'
-        ],
-        icdAreas: [
-          'Clarifying roles and decision rights across boards, executives, and management.',
-          'Designing lightweight performance dashboards that center the indicators you actually care about.',
-          'Supporting strategic planning that ties enterprise decisions back to community outcomes.'
-        ]
-      },
-      'native-entity|data': {
-        title: 'Using data to drive enterprise performance',
-        tagline: 'You have data across the enterprise, but it\'s not yet driving decisions the way it could.',
-        bullets: [
-          'Different business units track performance in different ways.',
-          'Leadership wants a clearer picture of what\'s working and what isn\'t.',
-          'Reporting to tribal government or shareholders could be stronger.'
-        ],
-        icdAreas: [
-          'Data inventory and assessment across business units.',
-          'Dashboard design that gives leadership actionable visibility.',
-          'Reporting frameworks that satisfy governance requirements and inform strategy.'
-        ]
-      },
-      'native-entity|partnerships': {
-        title: 'Managing complex business relationships',
-        tagline: 'Your enterprise works with multiple partners, and those relationships need intentional management.',
-        bullets: [
-          'Joint ventures or contracts may not be delivering expected value.',
-          'Partner relationships require significant leadership attention.',
-          'There\'s interest in new partnerships but limited capacity to evaluate them.'
-        ],
-        icdAreas: [
-          'Partnership portfolio review to assess current relationships.',
-          'Due diligence support for new opportunities.',
-          'Negotiation and structuring assistance that protects enterprise interests.'
-        ]
-      },
-      'native-entity|funding': {
-        title: 'Strengthening enterprise financial position',
-        tagline: 'Your enterprise needs financial structures that support growth and resilience.',
-        bullets: [
-          'Capital needs exceed current resources or borrowing capacity.',
-          'Financial planning is reactive rather than strategic.',
-          'There\'s interest in new financing structures but limited expertise internally.'
-        ],
-        icdAreas: [
-          'Financial planning and modeling for growth scenarios.',
-          'Capital strategy—identifying appropriate financing options.',
-          'Investor or lender relationship support.'
-        ]
-      },
-
-      // ==================
-      // NON-NATIVE ORGS
-      // ==================
-      'non-native-org|governance': {
-        title: 'Building governance for tribal partnership',
-        tagline: 'Your organization wants to partner well with tribes, and that starts with how you\'re structured.',
-        bullets: [
-          'Internal governance doesn\'t account for tribal consultation or consent.',
-          'Decision-making timelines don\'t align with tribal processes.',
-          'There\'s interest in deeper partnership but uncertainty about how to structure it.'
-        ],
-        icdAreas: [
-          'Governance assessment for tribal partnership readiness.',
-          'Policy development for tribal consultation and engagement.',
-          'Training for leadership and staff on tribal sovereignty and governance.'
-        ]
-      },
-      'non-native-org|operations': {
-        title: 'Operations that respect tribal context',
-        tagline: 'Your programs touch tribal communities, and operations need to reflect that reality.',
-        bullets: [
-          'Program design may not fully account for tribal priorities or processes.',
-          'Staff may lack training on working effectively in Indian Country.',
-          'Feedback loops from tribal partners are informal or inconsistent.'
-        ],
-        icdAreas: [
-          'Program review through a tribal partnership lens.',
-          'Staff training on tribal sovereignty, governance, and cultural context.',
-          'Feedback and accountability structures that center tribal voice.'
-        ]
-      },
-      'non-native-org|data': {
-        title: 'Data practices that respect tribal sovereignty',
-        tagline: 'You collect data that involves tribal communities, and your practices need to reflect tribal data sovereignty.',
-        bullets: [
-          'Data collection may not account for tribal consent or ownership.',
-          'Reporting doesn\'t flow back to tribal partners in useful ways.',
-          'There\'s uncertainty about how to handle tribal data appropriately.'
-        ],
-        icdAreas: [
-          'Data sovereignty assessment and policy development.',
-          'Co-designing data sharing agreements with tribal partners.',
-          'Training on tribal data sovereignty principles and practices.'
-        ]
-      },
-      'non-native-org|partnerships': {
-        title: 'Partnering with Native nations in a better way',
-        tagline: 'You\'re trying to work alongside Native nations and organizations and want to do it with more clarity, respect, and alignment.',
-        bullets: [
-          'There is interest or mandate to partner with tribes or Native communities, but the "how" is not fully clear.',
-          'Internal processes or timelines don\'t always line up with tribal governance or community priorities.',
-          'You want to build trust and long-term relationships, not one-off transactions.'
-        ],
-        icdAreas: [
-          'Orientation and training on sovereignty, governance, and practical partnership design.',
-          'Co-developing partnership frameworks and MOUs that respect Native timelines and decision-making.',
-          'Supporting joint planning sessions where tribal and partner priorities can be aligned honestly.'
-        ]
-      },
-      'non-native-org|funding': {
-        title: 'Funding approaches that support tribal priorities',
-        tagline: 'Your organization funds or resources work in Indian Country and wants to do it more effectively.',
-        bullets: [
-          'Funding mechanisms may not align with tribal timelines or priorities.',
-          'Reporting requirements create burden without building capacity.',
-          'There\'s interest in trust-based approaches but uncertainty about implementation.'
-        ],
-        icdAreas: [
-          'Funding practice review through a tribal lens.',
-          'Redesigning grantmaking or contracting for tribal context.',
-          'Training on trust-based philanthropy and tribal sovereignty.'
-        ]
-      },
-
-      // ==================
-      // OTHER NATIVE-SERVING
-      // ==================
-      'other|governance': {
-        title: 'Governance for a unique institution',
-        tagline: 'Your institution doesn\'t fit neatly into categories, and governance needs to reflect that complexity.',
-        bullets: [
-          'Multiple stakeholders or constituencies have different expectations.',
-          'Governance structures may have evolved organically without clear design.',
-          'There\'s a desire for clarity without losing the flexibility that\'s made you effective.'
-        ],
-        icdAreas: [
-          'Governance mapping to clarify current structures and pain points.',
-          'Stakeholder engagement to align on governance priorities.',
-          'Governance redesign that fits your unique context and mission.'
-        ]
-      },
-      'other|operations': {
-        title: 'Operations for a complex institution',
-        tagline: 'Your institution serves multiple purposes and populations, and operations need to hold that complexity.',
-        bullets: [
-          'Different programs or functions operate somewhat independently.',
-          'Staff wear multiple hats across different parts of the institution.',
-          'There\'s a desire for more coordination without creating bureaucracy.'
-        ],
-        icdAreas: [
-          'Operational assessment across functions and programs.',
-          'Process design that creates coherence without rigidity.',
-          'Role clarification and workload analysis.'
-        ]
-      },
-      'other|data': {
-        title: 'Data for a multi-faceted institution',
-        tagline: 'Your institution generates data across multiple functions, and it\'s not yet working together.',
-        bullets: [
-          'Different parts of the institution track different things in different ways.',
-          'Leadership wants a clearer picture of institutional impact.',
-          'Reporting to funders or stakeholders could be stronger.'
-        ],
-        icdAreas: [
-          'Data inventory across institutional functions.',
-          'Dashboard or reporting design for leadership visibility.',
-          'Evaluation framework that captures institutional impact.'
-        ]
-      },
-      'other|partnerships': {
-        title: 'Navigating a complex partner landscape',
-        tagline: 'Your institution works with many partners, and those relationships need intentional management.',
-        bullets: [
-          'Partners have different expectations and accountability structures.',
-          'Coordination consumes significant staff and leadership time.',
-          'There\'s a desire to be more strategic about which partnerships to prioritize.'
-        ],
-        icdAreas: [
-          'Partnership mapping and assessment.',
-          'Prioritization framework for partnership investment.',
-          'Coordination structures that reduce burden while maintaining relationships.'
-        ]
-      },
-      'other|funding': {
-        title: 'Sustainable funding for a unique institution',
-        tagline: 'Your institution needs funding structures that support your unique mission and model.',
-        bullets: [
-          'Funding comes from multiple sources with different requirements.',
-          'Financial sustainability depends on continued grant success.',
-          'There\'s interest in diversification but limited capacity to pursue it.'
-        ],
-        icdAreas: [
-          'Financial sustainability assessment.',
-          'Diversification planning aligned with mission.',
-          'Grant management and funder relationship support.'
-        ]
-      },
-
-      // ==================
-      // GENERIC FALLBACKS BY FOCUS
-      // ==================
-      'any|governance': {
-        title: 'Clarifying direction and decision-making',
-        tagline: 'You\'re at a moment where governance, structure, and long-term direction matter as much as any single program.',
-        bullets: [
-          'Different leaders or teams may hold slightly different pictures of the future.',
-          'Existing plans or frameworks don\'t fully reflect what\'s happening now.',
-          'Important decisions risk being delayed or revisited without a shared map.'
-        ],
-        icdAreas: [
-          'Facilitated strategy and governance work that names tradeoffs and choices clearly.',
-          'Documentation that is concise, usable, and grounded in your own language and context.',
-          'Implementation check-ins so strategy doesn\'t die on the shelf.'
-        ]
-      },
-      'any|operations': {
-        title: 'Turning good ideas into repeatable practice',
-        tagline: 'The work is there in pieces; the challenge is stitching it into something that holds under real pressure.',
-        bullets: [
-          'Staff are improvising solutions to gaps that should be solved by structure.',
-          'Community experience can vary depending on who happens to be working that day.',
-          'Internal communication is carrying too much of the weight that systems should carry.'
-        ],
-        icdAreas: [
-          'Mapping how work actually flows today and where it breaks.',
-          'Co-designing processes, tools, and roles with the people who will use them.',
-          'Building operating rhythms—meetings, check-ins, and reporting—that feel helpful, not burdensome.'
-        ]
-      },
-      'any|data': {
-        title: 'Making information work for you, not just funders',
-        tagline: 'There is data in the system. The question is how to make it meaningful for your decisions and your story.',
-        bullets: [
-          'Data collection is happening, but lives in separate systems or files.',
-          'Reporting deadlines drive behavior more than internal learning does.',
-          'Leaders want to see a clearer through-line from data to action.'
-        ],
-        icdAreas: [
-          'Inventorying what you already collect before creating anything new.',
-          'Designing simple visual and narrative ways to share insights with staff and leadership.',
-          'Building feedback loops so data shapes how programs evolve over time.'
-        ]
-      },
-      'any|partnerships': {
-        title: 'Aligning people who care about the same outcomes',
-        tagline: 'Multiple organizations are trying to help. The risk is everyone pulling in slightly different directions.',
-        bullets: [
-          'Partnership meetings are full, but next steps and accountability are not always clear.',
-          'Different partners may have different risk tolerances, timelines, and definitions of success.',
-          'Community members may experience "coordination" as one more meeting, not as relief.'
-        ],
-        icdAreas: [
-          'Helping partners name shared outcomes without flattening Native priorities.',
-          'Structuring partnership tables so decisions are made, tracked, and revisited transparently.',
-          'Clarifying what needs to stay with Native-led institutions versus what partners can carry.'
-        ]
-      },
-      'any|funding': {
-        title: 'Building something that lasts beyond one grant',
-        tagline: 'Funding is a tool—not the whole plan. You\'re trying to move from scrambling to sustaining.',
-        bullets: [
-          'Current work is heavily dependent on one or two key funding streams.',
-          'Reporting requirements may be driving more activity than strategy.',
-          'Leadership wants a clearer picture of what it would take to sustain or grow the work.'
-        ],
-        icdAreas: [
-          'Clarifying the core work you want to sustain versus what can remain opportunistic.',
-          'Aligning grant pursuits and partnerships with a longer-term financial picture.',
-          'Designing structures—entities, agreements, or staffing—that can hold growth over time.'
-        ]
-      },
-
-      // ==================
-      // DEFAULT FALLBACK
-      // ==================
-      'default': {
-        title: 'A moment for alignment and structure',
-        tagline: 'You\'re doing important work in Native communities or alongside Native nations, and the next step is tightening how the work is organized and supported.',
-        bullets: [
-          'You\'re carrying real responsibilities with limited time to step back and see the whole picture.',
-          'Pieces of strategy, operations, and data are present, but not yet fully aligned.',
-          'There is interest—internally or externally—in doing things in a more intentional, lasting way.'
-        ],
-        icdAreas: [
-          'Listening first to how work is already happening and what people are carrying.',
-          'Co-creating strategy, structures, and tools that fit your context, not a generic template.',
-          'Staying focused on implementation so plans, roles, and data get used in real life.'
-        ]
-      }
-    };
-
-    // Look up profile
     var key = keyOrg + '|' + keyFocus;
     var profile = profiles[key];
 
@@ -2330,7 +2242,6 @@
     var bullets = profile.bullets || [];
     var icdAreas = profile.icdAreas || [];
 
-    // Build HTML
     var bulletItems = bullets.map(function(item) {
       return '<li>' + escapeHtml(item) + '</li>';
     }).join('');
@@ -2343,9 +2254,12 @@
     var focusText = focusLabels[selections.focus] || 'Not specified';
     var stateText = stateLabels[selections.state] || 'Not specified';
 
+    // Get org-specific friction
+    var frictionSet = stateFrictionCopy[keyOrg] || stateFrictionCopy.default;
+    var fr = frictionSet[keyState] || stateFrictionCopy.default[keyState];
+
     var frictionHtml = '';
-    if (selections.state && stateFriction[selections.state]) {
-      var fr = stateFriction[selections.state];
+    if (fr) {
       frictionHtml = 
         '<p class="lab-result-friction">' +
           '<strong>Friction you named – ' + escapeHtml(fr.title) + ':</strong><br>' +
@@ -2353,25 +2267,32 @@
         '</p>';
     }
 
+    // Get org-specific CTA
+    var ctaText = ctaCopy[keyOrg] || ctaCopy['default'];
+
     resultEl.innerHTML = 
       '<div class="lab-result-card" id="lab-result-card-inner">' +
         '<p class="lab-result-kicker">Your snapshot</p>' +
         '<p class="lab-result-summary">' +
-          '<strong>Client type:</strong> ' + escapeHtml(orgText) + ' · ' +
+          '<strong>Context:</strong> ' + escapeHtml(orgText) + ' · ' +
           '<strong>Focus:</strong> ' + escapeHtml(focusText) + ' · ' +
           '<strong>Friction:</strong> ' + escapeHtml(stateText) +
         '</p>' +
         '<h3 class="lab-result-title">' + escapeHtml(title) + '</h3>' +
         '<p class="lab-result-tagline">' + escapeHtml(tagline) + '</p>' +
         frictionHtml +
-        '<ul class="lab-result-list">' +
-          bulletItems +
-        '</ul>' +
+        '<ul class="lab-result-list">' + bulletItems + '</ul>' +
         '<p class="lab-result-icd-label">How we typically support clients in a similar place:</p>' +
         '<p class="lab-result-icd-areas">' + icdItems + '</p>' +
         '<p class="lab-result-cta">' +
-          'If this sounds close to your context, <a href="contact.html">start a conversation →</a>' +
+          escapeHtml(ctaText) + ' <a href="contact.html">start a conversation →</a>' +
         '</p>' +
+        '<div class="lab-result-actions" id="lab-result-actions">' +
+          '<button type="button" class="lab-download-btn" id="lab-download-pdf" aria-label="Download your snapshot as a PDF">' +
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+            'Download PDF' +
+          '</button>' +
+        '</div>' +
       '</div>';
 
     // Animate card in
@@ -2382,37 +2303,39 @@
       });
     }
 
-    // Scroll to result with header offset
+    // Attach PDF download handler
+    var downloadBtn = document.getElementById('lab-download-pdf');
+    if (downloadBtn && typeof html2pdf !== 'undefined') {
+      downloadBtn.addEventListener('click', function() {
+        var cardEl = document.getElementById('lab-result-card-inner');
+        if (!cardEl) return;
+
+        var opt = {
+          margin: 0.6,
+          filename: 'ICD-StartingPoint-Snapshot.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true },
+          jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(cardEl).save();
+      });
+    }
+
     scrollToElement(resultEl);
 
-    // Dispatch custom event for analytics
+    // Analytics event
     try {
       var evt = new CustomEvent('icdStartingPointSubmit', {
-        detail: {
-          org: selections.org,
-          focus: selections.focus,
-          state: selections.state
-        }
+        detail: { org: selections.org, focus: selections.focus, state: selections.state }
       });
       window.dispatchEvent(evt);
-    } catch (e) {
-      // CustomEvent not supported in older browsers - fail silently
-    }
-  }
-
-  // Simple HTML escaping for safety
-  function escapeHtml(text) {
-    if (!text) return '';
-    var div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
+    } catch (e) {}
   }
 
   /* ========================================
      EVENT HANDLERS
      ======================================== */
-
-  // Option click
   options.forEach(function(btn) {
     btn.addEventListener('click', function() {
       var question = btn.getAttribute('data-question');
@@ -2421,19 +2344,14 @@
 
       // Deselect all options in this question
       options
-        .filter(function(o) {
-          return o.getAttribute('data-question') === question;
-        })
-        .forEach(function(o) {
-          o.classList.remove('selected');
-        });
+        .filter(function(o) { return o.getAttribute('data-question') === question; })
+        .forEach(function(o) { o.classList.remove('selected'); });
 
       // Select this option
       btn.classList.add('selected');
       selections[question] = value;
 
       if (question === 'org') {
-        // Update Q2/Q3 text + options when org changes
         applyOrgSpecificCopy();
       }
 
@@ -2447,7 +2365,7 @@
       if (index !== -1 && index < totalQuestions - 1) {
         setTimeout(function() {
           goToStep(index + 1);
-        }, 150); // Small delay for visual feedback
+        }, 150);
       }
     });
 
@@ -2510,7 +2428,7 @@
       clearResult();
       updateProgress();
       updateHashFromSelections();
-      applyOrgSpecificCopy(); // back to default copy
+      applyOrgSpecificCopy();
       goToStep(0);
     });
   }
@@ -2528,9 +2446,7 @@
   // Submit button
   if (submitBtn) {
     submitBtn.addEventListener('click', function() {
-      var allAnswered = questions.every(function(q) {
-        return selections[q];
-      });
+      var allAnswered = questions.every(function(q) { return selections[q]; });
       if (!allAnswered) return;
       buildProfile();
     });
@@ -2539,8 +2455,6 @@
   /* ========================================
      INITIALIZATION
      ======================================== */
-
-  // Start with default copy, then apply any URL params
   applyOrgSpecificCopy();
   applySelectionsFromParams();
 
@@ -2548,3 +2462,5 @@
 </script>
 </body>
 </html>
+
+    
