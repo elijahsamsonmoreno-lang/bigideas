@@ -288,6 +288,11 @@
       margin-top: 0.4rem;
     }
 
+
+
+
+
+
     /* QUESTIONS */
     #icd-site .lab-question {
       margin-bottom: 2.3rem;
@@ -750,6 +755,10 @@
 </head>
 <body>
 <div id="icd-site">
+
+
+
+
   <h1 class="sr-only">Starting Point – Indian Country Development diagnostic</h1>
 
   <!-- FIXED HEADER + HAMBURGER -->
@@ -777,6 +786,7 @@
       <span></span>
       <span></span>
       <span></span>
+      <span></span>
     </button>
   </header>
 
@@ -801,7 +811,7 @@
         We built this short diagnostic for people carrying real work in and alongside Indian Country who are trying to make sense of a crowded landscape of needs, opportunities, and partners.
         In three questions, it gives you a clearer picture of where your project sits today and what kind of support would actually help.
         <p class="lab-intro-italic">
-          You can use these results with or without us. Our hope is simply to offer a sharper starting point for your own planning, conversations with leadership, or talks with potential partners—whether or not we ever work together.
+          You can use these results with or without us. Our goal is to offer a small public good: a sharper starting point for your own planning, conversations with leadership, or talks with potential partners.
         </p>
       </div>
 
@@ -960,7 +970,8 @@
             </button>
           </div>
         </fieldset>
-        <!-- Q3: CURRENT STATE / FRICTION -->
+
+        <!-- Q3: CURRENT STATE / FRICTION (copy will be tailored by org) -->
         <fieldset class="lab-question lab-question--hidden" data-question="state">
           <legend class="lab-question-title" id="state-question-title">
             What's the friction right now?
@@ -1042,218 +1053,139 @@
           </div>
         </fieldset>
 
-        <!-- ACTIONS + PROGRESS -->
+        <!-- ACTIONS -->
         <div class="lab-actions">
           <div class="lab-actions-left">
-            <div id="lab-progress-text" class="lab-progress">0 of 3 questions answered</div>
-            <div class="lab-progress-bar"
-                 role="progressbar"
-                 aria-valuemin="0"
-                 aria-valuemax="3"
-                 aria-valuenow="0">
+            <div 
+              class="lab-progress-bar" 
+              role="progressbar" 
+              aria-valuenow="0" 
+              aria-valuemin="0" 
+              aria-valuemax="3"
+              aria-label="Question progress"
+              id="lab-progress-bar"
+            >
               <div class="lab-progress-bar-fill" id="lab-progress-bar-fill"></div>
             </div>
+            <span class="lab-progress" id="lab-progress-text">0 of 3 questions answered</span>
+            <span>Answer all three questions to see how we'd usually support clients in a similar place.</span>
           </div>
           <div class="lab-actions-buttons">
-            <button type="button" class="lab-button lab-button-secondary" id="lab-back">
+            <button 
+              type="button" 
+              class="lab-button lab-button-secondary" 
+              id="lab-back" 
+              disabled
+              aria-label="Go back to previous question"
+            >
               Back
             </button>
-            <button type="button" class="lab-button lab-button-secondary" id="lab-reset">
-              Reset
+            <button 
+              type="button" 
+              class="lab-button lab-button-secondary" 
+              id="lab-reset"
+              aria-label="Clear all selections and start over"
+            >
+              Clear selections
             </button>
-            <button type="button" class="lab-button lab-button-primary" id="lab-submit" disabled>
+            <button 
+              type="button" 
+              class="lab-button lab-button-primary" 
+              id="lab-submit" 
+              disabled
+              aria-describedby="lab-progress-text"
+            >
               See your snapshot
             </button>
           </div>
         </div>
       </form>
 
-      <!-- RESULT CONTAINER -->
-      <div class="lab-result" id="lab-result"></div>
+      <!-- RESULT -->
+      <div class="lab-result" id="lab-result" aria-live="polite" aria-atomic="true"></div>
     </section>
   </main>
 
   <footer class="site-footer">
-    Indian Country Development &middot; Strategy, operations, and data support for Native-led governments and their partners.
+    © 2025 Tribal Economic Development Partners L.L.C.
   </footer>
 </div>
 <script>
-(function () {
-  'use strict';
-
-  // Remove no-js class if JS is running
+(function() {
+  // JS is running, so remove no-js class
   document.documentElement.classList.remove('no-js');
 
-  var root = document.getElementById('icd-site');
+  const root = document.getElementById('icd-site');
   if (!root) return;
 
-  var form = document.getElementById('strategy-lab-form');
-  if (!form) return;
+  /* ========================================
+     NAV TOGGLE
+     ======================================== */
+  const toggle = root.querySelector('.icd-nav-toggle');
+  const drawer = root.querySelector('.icd-nav-drawer');
 
-  var questions = ['org', 'focus', 'state'];
-  var totalQuestions = questions.length;
-  var currentStepIndex = 0;
+  function setNavOpen(open) {
+    if (!toggle || !drawer) return;
+    toggle.classList.toggle('open', open);
+    drawer.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+    root.classList.toggle('nav-open', open);
+  }
 
-  var selections = {
+  if (toggle && drawer) {
+    toggle.addEventListener('click', function() {
+      const isOpen = drawer.classList.contains('open');
+      setNavOpen(!isOpen);
+    });
+
+    drawer.querySelectorAll('a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        setNavOpen(false);
+      });
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      setNavOpen(false);
+    }
+  });
+
+  /* ========================================
+     STRATEGY LAB - ELEMENT REFERENCES
+     ======================================== */
+  const options = Array.from(root.querySelectorAll('.lab-option'));
+  const progressText = root.querySelector('#lab-progress-text');
+  const progressBar = root.querySelector('#lab-progress-bar');
+  const progressBarFill = root.querySelector('#lab-progress-bar-fill');
+  const submitBtn = root.querySelector('#lab-submit');
+  const resetBtn = root.querySelector('#lab-reset');
+  const backBtn = root.querySelector('#lab-back');
+  const resultEl = root.querySelector('#lab-result');
+  const form = root.querySelector('#strategy-lab-form');
+
+  const questions = ['org', 'focus', 'state'];
+  const totalQuestions = questions.length;
+
+  const selections = {
     org: null,
     focus: null,
     state: null
   };
 
-  var questionEls = {
-    org: form.querySelector('fieldset[data-question="org"]'),
-    focus: form.querySelector('fieldset[data-question="focus"]'),
-    state: form.querySelector('fieldset[data-question="state"]')
+  const questionEls = {
+    org: root.querySelector('.lab-question[data-question="org"]'),
+    focus: root.querySelector('.lab-question[data-question="focus"]'),
+    state: root.querySelector('.lab-question[data-question="state"]')
   };
 
-  var options = Array.prototype.slice.call(
-    form.querySelectorAll('.lab-option')
-  );
-
-  var resultEl = document.getElementById('lab-result');
-
-  var progressText = document.getElementById('lab-progress-text');
-  var progressBar = form.querySelector('.lab-progress-bar');
-  var progressBarFill = document.getElementById('lab-progress-bar-fill');
-
-  var backBtn = document.getElementById('lab-back');
-  var resetBtn = document.getElementById('lab-reset');
-  var submitBtn = document.getElementById('lab-submit');
-
-  // NAV TOGGLE
-  var navToggle = root.querySelector('.icd-nav-toggle');
-  var navDrawer = root.querySelector('.icd-nav-drawer');
-
-  if (navToggle && navDrawer) {
-    navToggle.addEventListener('click', function () {
-      var isOpen = navDrawer.classList.toggle('open');
-      navToggle.classList.toggle('open', isOpen);
-      navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-      navDrawer.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
-      root.classList.toggle('nav-open', isOpen);
-    });
-
-    navDrawer.addEventListener('click', function (e) {
-      if (e.target.tagName && e.target.tagName.toLowerCase() === 'a') {
-        navDrawer.classList.remove('open');
-        navToggle.classList.remove('open');
-        navToggle.setAttribute('aria-expanded', 'false');
-        navDrawer.setAttribute('aria-hidden', 'true');
-        root.classList.remove('nav-open');
-      }
-    });
-  }
+  let currentStepIndex = 0; // 0 = org, 1 = focus, 2 = state
 
   /* ========================================
-     HELPER FUNCTIONS
+     LABEL MAPPINGS
      ======================================== */
-
-  function getHeaderHeight() {
-    var header = root.querySelector('.icd-header');
-    return header ? header.offsetHeight + 16 : 80;
-  }
-
-  function scrollToElement(el) {
-    if (!el) return;
-    var headerOffset = getHeaderHeight();
-    var rect = el.getBoundingClientRect();
-    var offset = rect.top + window.pageYOffset - headerOffset;
-
-    window.scrollTo({
-      top: offset,
-      behavior: 'smooth'
-    });
-  }
-
-  function showQuestion(key) {
-    var el = questionEls[key];
-    if (!el) return;
-    el.classList.remove('lab-question--hidden');
-    el.classList.add('lab-question--visible');
-  }
-
-  function hideQuestion(key) {
-    var el = questionEls[key];
-    if (!el) return;
-    el.classList.remove('lab-question--visible');
-    el.classList.add('lab-question--hidden');
-  }
-
-  function updateBackButton() {
-    if (!backBtn) return;
-    backBtn.disabled = currentStepIndex === 0;
-  }
-
-  function goToStep(index) {
-    if (index < 0) index = 0;
-    if (index > totalQuestions - 1) index = totalQuestions - 1;
-    currentStepIndex = index;
-
-    questions.forEach(function (q, idx) {
-      if (idx === currentStepIndex) {
-        showQuestion(q);
-      } else {
-        hideQuestion(q);
-      }
-    });
-
-    updateBackButton();
-    scrollToElement(form);
-  }
-
-  function clearResult() {
-    if (resultEl) {
-      resultEl.innerHTML = '';
-    }
-  }
-
-  function updateProgress() {
-    var answered = questions.filter(function (q) {
-      return !!selections[q];
-    }).length;
-
-    if (progressText) {
-      progressText.textContent =
-        answered + ' of ' + totalQuestions + ' questions answered';
-    }
-
-    if (progressBarFill) {
-      var pct = (answered / totalQuestions) * 100;
-      progressBarFill.style.width = pct + '%';
-    }
-
-    if (progressBar) {
-      progressBar.setAttribute('aria-valuenow', answered);
-    }
-
-    if (submitBtn) {
-      submitBtn.disabled = answered !== totalQuestions;
-    }
-  }
-
-  function updateRadioGroupA11y(questionKey) {
-    var groupOptions = options.filter(function (o) {
-      return o.getAttribute('data-question') === questionKey;
-    });
-
-    var anySelected = groupOptions.some(function (opt) {
-      return opt.classList.contains('selected');
-    });
-
-    groupOptions.forEach(function (o, idx) {
-      var isSelected = o.classList.contains('selected');
-      o.setAttribute('aria-checked', isSelected ? 'true' : 'false');
-
-      if (isSelected || (!anySelected && idx === 0)) {
-        o.setAttribute('tabindex', '0');
-      } else {
-        o.setAttribute('tabindex', '-1');
-      }
-    });
-  }
-
-  // Label maps used in the summary
-  var orgLabels = {
+  const orgLabels = {
     'tribal-gov': 'Tribal Nation',
     'native-entity': 'Native Entity Enterprise',
     'native-org': 'Native-led organization',
@@ -1261,177 +1193,63 @@
     'other': 'Other Native-serving institution'
   };
 
-  var focusLabels = {
-    governance: 'Strategy & governance',
-    operations: 'Programs & operations',
-    data: 'Data, evaluation, & evidence',
-    partnerships: 'Partnerships & alignment',
-    funding: 'Funding & sustainability'
+  const focusLabels = {
+    'governance': 'Strategy & governance',
+    'operations': 'Programs & operations',
+    'data': 'Data, evaluation, & evidence',
+    'partnerships': 'Partnerships & alignment',
+    'funding': 'Funding & sustainability'
   };
 
-  var stateLabels = {
-    crowded: 'Too much at once',
-    stalled: 'Stalled momentum',
-    capacity: 'Stretched thin',
-    invisible: 'Invisible impact',
-    building: 'Starting fresh'
+  const stateLabels = {
+    'crowded': 'Too much at once',
+    'stalled': 'Stalled momentum',
+    'capacity': 'Stretched thin',
+    'invisible': 'Invisible impact',
+    'building': 'Starting fresh'
   };
-  // FRICTION DEFINITIONS (ORG + STATE SPECIFIC)
-  var stateFriction = {
-    default: {
-      crowded: {
-        title: 'Too much at once',
-        text: 'You named a long list of needs and opportunities. The friction is sequencing—deciding what happens now, what waits, and what drops off the list without guilt.'
-      },
-      stalled: {
-        title: 'Stalled momentum',
-        text: 'You have plans or agreements on paper. The friction is converting those into steady follow-through and shared accountability.'
-      },
-      capacity: {
-        title: 'Stretched thin',
-        text: 'People are carrying a lot. The friction is adding structure in a way that protects staff, instead of asking the same people to hold even more.'
-      },
-      invisible: {
-        title: 'Invisible impact',
-        text: 'Good work is happening. The friction is surfacing that impact in ways that feel honest to community and legible to decision-makers and funders.'
-      },
-      building: {
-        title: 'Starting fresh',
-        text: 'You\'re building something new. The friction is designing the foundation with enough structure to last, without freezing the work in place too early.'
-      }
-    },
 
-    'tribal-gov': {
-      crowded: {
-        title: 'Competing Nation priorities',
-        text: 'Council, departments, and enterprises all have legitimate needs. The friction is agreeing on a shared sequence so the Nation isn’t trying to do everything at once.'
-      },
-      stalled: {
-        title: 'Resolutions without traction',
-        text: 'Resolutions, plans, or codes exist, but the machinery to implement them is uneven. The friction is turning council intent into steady day-to-day progress.'
-      },
-      capacity: {
-        title: 'Overextended leaders and staff',
-        text: 'The same people sit on multiple boards, committees, and crisis teams. The friction is protecting their time and redistributing work without losing momentum.'
-      },
-      invisible: {
-        title: 'Nation impact not fully visible',
-        text: 'Citizens feel the work on the ground, but outside partners—or even some leaders—don’t see the full picture. The friction is telling the Nation’s story on its own terms.'
-      },
-      building: {
-        title: 'New initiative for the Nation',
-        text: 'You’re standing up a new office, program, or entity. The friction is balancing council expectations, staff reality, and community needs while you set the foundation.'
-      }
+  const stateFriction = {
+    crowded: {
+      title: 'Too much at once',
+      text: 'You named a long list of needs and opportunities. The friction is sequencing—deciding what happens now, what waits, and what drops off the list without guilt.'
     },
-
-    'native-entity': {
-      crowded: {
-        title: 'Crowded enterprise agenda',
-        text: 'Multiple projects, deals, and priorities sit in the same pipeline. The friction is sequencing enterprise moves so the portfolio grows without overwhelming management.'
-      },
-      stalled: {
-        title: 'Plans that don’t move',
-        text: 'Strategic plans or board directives exist, but implementation is inconsistent across units. The friction is connecting enterprise decisions to visible follow-through.'
-      },
-      capacity: {
-        title: 'Thin management bandwidth',
-        text: 'Key executives and managers are stretched across too many responsibilities. The friction is matching ambition with realistic leadership and staff capacity.'
-      },
-      invisible: {
-        title: 'Impact unclear to owners',
-        text: 'Performance and community impact aren’t fully visible to tribal citizens or shareholders. The friction is reporting in a way that matches what owners actually care about.'
-      },
-      building: {
-        title: 'New venture or line of business',
-        text: 'You’re starting or acquiring something new. The friction is designing governance, reporting, and roles so it strengthens the broader enterprise instead of fragmenting it.'
-      }
+    stalled: {
+      title: 'Stalled momentum',
+      text: 'You have plans, resolutions, or MOUs on paper. The friction is converting those into steady follow-through and shared accountability.'
     },
-
-    'native-org': {
-      crowded: {
-        title: 'Too many priorities for the team',
-        text: 'The organization is saying “yes” to a lot. The friction is deciding what to carry now, what to pause, and what to let go so staff don’t burn out.'
-      },
-      stalled: {
-        title: 'Good ideas stuck in draft',
-        text: 'Strategic plans and new program ideas exist, but they get delayed or half-implemented. The friction is protecting time and structure for execution, not just visioning.'
-      },
-      capacity: {
-        title: 'Core staff stretched thin',
-        text: 'A small circle holds most of the relationships and institutional memory. The friction is spreading knowledge and building systems that don’t rely on a few people.'
-      },
-      invisible: {
-        title: 'Impact hard to show beyond community',
-        text: 'Community knows your value, but that story doesn’t always land with funders, partners, or boards. The friction is translating lived impact into narrative and data.'
-      },
-      building: {
-        title: 'New Native-led effort',
-        text: 'You’re launching a new program, collective, or organization. The friction is setting guardrails that protect the mission while you experiment and learn.'
-      }
+    capacity: {
+      title: 'Stretched thin',
+      text: 'People are carrying a lot. The friction is adding structure in a way that protects staff, instead of asking the same people to hold even more.'
     },
-
-    'non-native-org': {
-      crowded: {
-        title: 'Too many tribal-related asks at once',
-        text: 'Multiple initiatives, mandates, or grants involve tribes, but internal strategy is thin. The friction is prioritizing work so you don’t overload Native partners or your own team.'
-      },
-      stalled: {
-        title: 'Partnerships stuck in talk',
-        text: 'Conversations with Native nations or orgs are happening, but agreements and action lag. The friction is aligning internal processes with tribal timelines and decision-making.'
-      },
-      capacity: {
-        title: 'Limited internal tribal capacity',
-        text: 'Only a few people understand tribal context, and they’re on every email thread. The friction is building broader institutional capacity so work with tribes isn’t person-dependent.'
-      },
-      invisible: {
-        title: 'Impact unclear to Native partners',
-        text: 'Reports may meet your internal needs but don’t fully reflect what matters to tribal partners. The friction is co-defining success and sharing data in a more relational way.'
-      },
-      building: {
-        title: 'New work in Indian Country',
-        text: 'You’re entering or expanding work with tribes. The friction is designing from the beginning in a way that centers tribal governance and voice, not retrofitting later.'
-      }
+    invisible: {
+      title: 'Invisible impact',
+      text: 'Good work is happening. The friction is surfacing that impact in ways that feel honest to community and legible to decision-makers and funders.'
     },
-
-    other: {
-      crowded: {
-        title: 'Competing institutional priorities',
-        text: 'Native-serving work is one of many institutional priorities. The friction is giving it a clear place in the agenda so it doesn’t always wait for “later.”'
-      },
-      stalled: {
-        title: 'Initiatives stuck mid-stream',
-        text: 'Commitments were made but systems, staffing, or follow-through haven’t fully materialized. The friction is reconnecting promises to practical next steps.'
-      },
-      capacity: {
-        title: 'Overextended Native-serving teams',
-        text: 'The people closest to Native communities are asked to carry everything. The friction is distributing responsibility without weakening community trust.'
-      },
-      invisible: {
-        title: 'Impact not visible to stakeholders',
-        text: 'Your institution’s Native-serving impact isn’t fully legible to boards, funders, or partners. The friction is clarifying narrative and evidence without bureaucratizing the work.'
-      },
-      building: {
-        title: 'New Native-serving initiative',
-        text: 'You’re building something new inside a larger institution. The friction is protecting Native-serving intent from being diluted by inherited systems or timelines.'
-      }
+    building: {
+      title: 'Starting fresh',
+      text: 'You\'re building something new. The friction is designing the foundation with enough structure to last, without freezing the work in place too early.'
     }
   };
 
-  // ORG-SPECIFIC QUESTION & OPTION COPY ELEMENT HOOKS
-  var focusQuestionTitleEl = questionEls.focus
+  /* ========================================
+     ORG-SPECIFIC QUESTION & OPTION COPY
+     ======================================== */
+
+  const focusQuestionTitleEl = questionEls.focus
     ? questionEls.focus.querySelector('.lab-question-title')
     : null;
-  var focusQuestionHelpEl = questionEls.focus
+  const focusQuestionHelpEl = questionEls.focus
     ? questionEls.focus.querySelector('.lab-question-help')
     : null;
-  var stateQuestionTitleEl = questionEls.state
+  const stateQuestionTitleEl = questionEls.state
     ? questionEls.state.querySelector('.lab-question-title')
     : null;
-  var stateQuestionHelpEl = questionEls.state
+  const stateQuestionHelpEl = questionEls.state
     ? questionEls.state.querySelector('.lab-question-help')
     : null;
 
-  var focusLabelEls = {
+  const focusLabelEls = {
     governance: root.querySelector('[data-focus-label="governance"]'),
     operations: root.querySelector('[data-focus-label="operations"]'),
     data: root.querySelector('[data-focus-label="data"]'),
@@ -1439,7 +1257,7 @@
     funding: root.querySelector('[data-focus-label="funding"]')
   };
 
-  var focusSubEls = {
+  const focusSubEls = {
     governance: root.querySelector('[data-focus-sub="governance"]'),
     operations: root.querySelector('[data-focus-sub="operations"]'),
     data: root.querySelector('[data-focus-sub="data"]'),
@@ -1447,7 +1265,7 @@
     funding: root.querySelector('[data-focus-sub="funding"]')
   };
 
-  var stateLabelEls = {
+  const stateLabelEls = {
     crowded: root.querySelector('[data-state-label="crowded"]'),
     stalled: root.querySelector('[data-state-label="stalled"]'),
     capacity: root.querySelector('[data-state-label="capacity"]'),
@@ -1455,7 +1273,7 @@
     building: root.querySelector('[data-state-label="building"]')
   };
 
-  var stateSubEls = {
+  const stateSubEls = {
     crowded: root.querySelector('[data-state-sub="crowded"]'),
     stalled: root.querySelector('[data-state-sub="stalled"]'),
     capacity: root.querySelector('[data-state-sub="capacity"]'),
@@ -1463,7 +1281,7 @@
     building: root.querySelector('[data-state-sub="building"]')
   };
 
-  var focusQuestionCopy = {
+  const focusQuestionCopy = {
     default: {
       title: 'Where do you most need support right now?',
       help: 'Not everything at once—where would change unlock the most downstream impact?'
@@ -1484,13 +1302,13 @@
       title: 'Where do you most need support for work in Indian Country?',
       help: 'Focus on the parts of your work that touch Native nations or Native communities—where is the biggest gap right now?'
     },
-    other: {
+    'other': {
       title: 'Where does your institution most need support?',
       help: 'Think about the Native-serving work you do—where would alignment or structure create the most downstream impact?'
     }
   };
 
-  var stateQuestionCopy = {
+  const stateQuestionCopy = {
     default: {
       title: 'What\'s the friction right now?',
       help: 'These are all common. Pick the one that feels closest today.'
@@ -1511,13 +1329,13 @@
       title: 'What’s the friction in your work with Native partners?',
       help: 'Think about where good intentions are running into process, power, or timing barriers.'
     },
-    other: {
+    'other': {
       title: 'What’s the friction for your institution right now?',
       help: 'Focus on the Native-serving side of your work, wherever it lives in the system.'
     }
   };
 
-  var focusOptionCopy = {
+  const focusOptionCopy = {
     default: {
       governance: {
         label: 'Strategy & governance',
@@ -1628,7 +1446,7 @@
         sub: 'How dollars move to Native partners and how requirements are set and enforced.'
       }
     },
-    other: {
+    'other': {
       governance: {
         label: 'Institutional strategy & governance',
         sub: 'How leadership, boards, and councils make decisions about Native-serving work.'
@@ -1652,7 +1470,7 @@
     }
   };
 
-  var stateOptionCopy = {
+  const stateOptionCopy = {
     default: {
       crowded: {
         label: 'Too much at once',
@@ -1763,7 +1581,7 @@
         sub: 'You’re starting or expanding work with tribes and want to design it in a better way from the beginning.'
       }
     },
-    other: {
+    'other': {
       crowded: {
         label: 'Competing institutional priorities',
         sub: 'Native-serving work is just one of many priorities without a clear place in the overall agenda.'
@@ -1788,10 +1606,10 @@
   };
 
   function applyOrgSpecificCopy() {
-    var orgKey = selections.org || 'default';
+    const orgKey = selections.org || 'default';
 
-    var fq = focusQuestionCopy[orgKey] || focusQuestionCopy.default;
-    var sq = stateQuestionCopy[orgKey] || stateQuestionCopy.default;
+    const fq = focusQuestionCopy[orgKey] || focusQuestionCopy.default;
+    const sq = stateQuestionCopy[orgKey] || stateQuestionCopy.default;
 
     if (focusQuestionTitleEl && fq.title) {
       focusQuestionTitleEl.textContent = fq.title;
@@ -1806,25 +1624,147 @@
       stateQuestionHelpEl.textContent = sq.help;
     }
 
-    var focusSet = focusOptionCopy[orgKey] || focusOptionCopy.default;
-    ['governance', 'operations', 'data', 'partnerships', 'funding'].forEach(function (key) {
-      var cfg = focusSet[key] || focusOptionCopy.default[key];
-      if (!cfg) return;
-      if (focusLabelEls[key]) focusLabelEls[key].textContent = cfg.label;
-      if (focusSubEls[key]) focusSubEls[key].textContent = cfg.sub;
+    const focusSet = focusOptionCopy[orgKey] || focusOptionCopy.default;
+    ['governance','operations','data','partnerships','funding'].forEach(function(key) {
+      const cfg = focusSet[key] || focusOptionCopy.default[key];
+      if (cfg) {
+        if (focusLabelEls[key]) focusLabelEls[key].textContent = cfg.label;
+        if (focusSubEls[key]) focusSubEls[key].textContent = cfg.sub;
+      }
     });
 
-    var stateSet = stateOptionCopy[orgKey] || stateOptionCopy.default;
-    ['crowded', 'stalled', 'capacity', 'invisible', 'building'].forEach(function (key) {
-      var cfg = stateSet[key] || stateOptionCopy.default[key];
-      if (!cfg) return;
-      if (stateLabelEls[key]) stateLabelEls[key].textContent = cfg.label;
-      if (stateSubEls[key]) stateSubEls[key].textContent = cfg.sub;
+    const stateSet = stateOptionCopy[orgKey] || stateOptionCopy.default;
+    ['crowded','stalled','capacity','invisible','building'].forEach(function(key) {
+      const cfg = stateSet[key] || stateOptionCopy.default[key];
+      if (cfg) {
+        if (stateLabelEls[key]) stateLabelEls[key].textContent = cfg.label;
+        if (stateSubEls[key]) stateSubEls[key].textContent = cfg.sub;
+      }
     });
   }
+
+  /* ========================================
+     HELPER FUNCTIONS
+     ======================================== */
+
+  // Get header height for scroll offset
+  function getHeaderHeight() {
+    var header = root.querySelector('.icd-header');
+    return header ? header.offsetHeight + 16 : 80;
+  }
+
+  // Smooth scroll with header offset
+  function scrollToElement(el) {
+    if (!el) return;
+    var headerOffset = getHeaderHeight();
+    var elementPosition = el.getBoundingClientRect().top + window.pageYOffset;
+    var offsetPosition = elementPosition - headerOffset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  }
+
+  function updateProgress() {
+    var answered = questions.filter(function(q) {
+      return selections[q];
+    }).length;
+
+    if (progressText) {
+      progressText.textContent = answered + ' of ' + totalQuestions + ' questions answered';
+    }
+
+    if (progressBarFill) {
+      var pct = (answered / totalQuestions) * 100;
+      progressBarFill.style.width = pct + '%';
+    }
+
+    // Update ARIA on progress bar
+    if (progressBar) {
+      progressBar.setAttribute('aria-valuenow', answered);
+    }
+
+    if (submitBtn) {
+      submitBtn.disabled = answered !== totalQuestions;
+    }
+  }
+
+  function clearResult() {
+    if (resultEl) {
+      resultEl.innerHTML = '';
+    }
+  }
+
+  function updateRadioGroupA11y(questionKey) {
+    var groupOptions = options.filter(function(o) {
+      return o.getAttribute('data-question') === questionKey;
+    });
+
+    groupOptions.forEach(function(o, idx) {
+      var isSelected = o.classList.contains('selected');
+      o.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+
+      // First option or selected option gets tabindex 0
+      if (isSelected) {
+        o.setAttribute('tabindex', '0');
+      } else {
+        // If nothing selected, first gets tabindex 0
+        var anySelected = groupOptions.some(function(opt) {
+          return opt.classList.contains('selected');
+        });
+        if (!anySelected && idx === 0) {
+          o.setAttribute('tabindex', '0');
+        } else if (!isSelected) {
+          o.setAttribute('tabindex', '-1');
+        }
+      }
+    });
+  }
+
+  function showQuestion(key) {
+    var el = questionEls[key];
+    if (!el) return;
+    el.classList.remove('lab-question--hidden');
+    el.classList.add('lab-question--visible');
+  }
+
+  function hideQuestion(key) {
+    var el = questionEls[key];
+    if (!el) return;
+    el.classList.remove('lab-question--visible');
+    el.classList.add('lab-question--hidden');
+  }
+
+  function updateBackButton() {
+    if (!backBtn) return;
+    backBtn.disabled = currentStepIndex === 0;
+  }
+
+  function goToStep(index) {
+    if (index < 0) index = 0;
+    if (index > totalQuestions - 1) index = totalQuestions - 1;
+    currentStepIndex = index;
+
+    questions.forEach(function(q, idx) {
+      if (idx === currentStepIndex) {
+        showQuestion(q);
+      } else {
+        hideQuestion(q);
+      }
+    });
+
+    updateBackButton();
+
+    // Scroll to form with header offset
+    if (form) {
+      scrollToElement(form);
+    }
+  }
+
   function updateHashFromSelections() {
-    var answered = questions.filter(function (q) {
-      return !!selections[q];
+    var answered = questions.filter(function(q) {
+      return selections[q];
     }).length;
 
     if (!answered) {
@@ -1845,41 +1785,38 @@
     }
   }
 
+
   function applySelectionsFromParams() {
     var params = new URLSearchParams(window.location.search);
     var highestAnsweredIndex = -1;
 
-    questions.forEach(function (q, idx) {
+    questions.forEach(function(q, idx) {
       var val = params.get(q);
-      if (!val) return;
-
-      var validOption = options.find(function (o) {
-        return (
-          o.getAttribute('data-question') === q &&
-          o.getAttribute('data-value') === val
-        );
-      });
-
-      if (validOption) {
-        selections[q] = val;
-        highestAnsweredIndex = idx;
+      if (val) {
+        // Validate that the value exists in our options
+        var validOption = options.find(function(o) {
+          return o.getAttribute('data-question') === q && o.getAttribute('data-value') === val;
+        });
+        if (validOption) {
+          selections[q] = val;
+          highestAnsweredIndex = idx;
+        }
       }
     });
 
-    options.forEach(function (o) {
+    // Clear UI first
+    options.forEach(function(o) {
       o.classList.remove('selected');
       o.setAttribute('aria-checked', 'false');
     });
 
-    questions.forEach(function (q) {
+    // Re-apply valid selections from URL
+    questions.forEach(function(q) {
       var val = selections[q];
       if (!val) return;
 
-      var btn = options.find(function (o) {
-        return (
-          o.getAttribute('data-question') === q &&
-          o.getAttribute('data-value') === val
-        );
+      var btn = options.find(function(o) {
+        return o.getAttribute('data-question') === q && o.getAttribute('data-value') === val;
       });
 
       if (btn) {
@@ -1889,19 +1826,26 @@
       updateRadioGroupA11y(q);
     });
 
+    // Apply org-specific copy after org has potentially been restored
     applyOrgSpecificCopy();
 
+    // Go to the appropriate step
     if (highestAnsweredIndex === -1) {
       goToStep(0);
     } else if (highestAnsweredIndex < totalQuestions - 1) {
+      // If not all answered, go to next unanswered
       goToStep(highestAnsweredIndex + 1);
     } else {
+      // All answered, stay on last question
       goToStep(highestAnsweredIndex);
     }
 
     updateProgress();
   }
 
+  /* ========================================
+     PROFILE DEFINITIONS
+     ======================================== */
   function buildProfile() {
     if (!resultEl) return;
 
@@ -1909,7 +1853,9 @@
     var keyFocus = selections.focus || 'governance';
 
     var profiles = {
+      // ==================
       // TRIBAL NATION
+      // ==================
       'tribal-gov|governance': {
         title: 'Governance work with a full plate',
         tagline: 'You\'re carrying core governmental responsibilities while trying to modernize structures and position the Nation for what\'s next.',
@@ -1924,7 +1870,6 @@
           'Implementation support that respects political realities while still moving work forward.'
         ]
       },
-
       'tribal-gov|operations': {
         title: 'Programs that need clearer structure',
         tagline: 'The Nation is doing a lot—but the way work is organized may be getting in the way of consistent follow-through.',
@@ -1939,7 +1884,6 @@
           'Lightweight tracking tools so leadership can see how work is moving without overburdening staff.'
         ]
       },
-
       'tribal-gov|data': {
         title: 'Making information actually usable',
         tagline: 'Data exists in different systems, but it\'s not yet telling the full story of what the Nation is accomplishing.',
@@ -1954,7 +1898,6 @@
           'Support translating data into narratives for council, citizens, and partners.'
         ]
       },
-
       'tribal-gov|partnerships': {
         title: 'Navigating complex partner relationships',
         tagline: 'The Nation is working with multiple external partners, and coordination is becoming as much work as the work itself.',
@@ -1969,7 +1912,6 @@
           'Coordination structures that reduce burden on tribal staff while maintaining relationships.'
         ]
       },
-
       'tribal-gov|funding': {
         title: 'Building sustainable revenue and funding',
         tagline: 'The Nation needs funding structures that support long-term goals, not just this year\'s grant cycle.',
@@ -1985,7 +1927,9 @@
         ]
       },
 
+      // ==================
       // NATIVE-LED ORGS
+      // ==================
       'native-org|governance': {
         title: 'Native-led organization finding its footing',
         tagline: 'Your organization is doing important work, and now it\'s time to strengthen the structures that will help it last.',
@@ -2000,7 +1944,6 @@
           'Documentation and policies that fit your culture and stage of growth.'
         ]
       },
-
       'native-org|operations': {
         title: 'Native-led work outgrowing informal systems',
         tagline: 'Your team is doing powerful work with limited infrastructure—and growth is starting to expose the seams.',
@@ -2015,7 +1958,6 @@
           'Aligning program models and evaluation so future growth feels intentional, not reactive.'
         ]
       },
-
       'native-org|data': {
         title: 'Telling the story of Native-led work',
         tagline: 'You know your work is making a difference. The challenge is capturing it in ways that honor community and satisfy funders.',
@@ -2030,7 +1972,6 @@
           'Translating local impact into funder-ready language without losing the heart of the work.'
         ]
       },
-
       'native-org|partnerships': {
         title: 'Strengthening collaborative relationships',
         tagline: 'You\'re working alongside other organizations and want those partnerships to be generative, not extractive.',
@@ -2045,7 +1986,6 @@
           'Building internal capacity to manage partnerships without overextending staff.'
         ]
       },
-
       'native-org|funding': {
         title: 'Moving beyond grant-to-grant survival',
         tagline: 'Your organization does important work, but the funding model isn\'t sustainable yet.',
@@ -2061,7 +2001,9 @@
         ]
       },
 
+      // ==================
       // NATIVE ENTITY ENTERPRISE
+      // ==================
       'native-entity|governance': {
         title: 'Enterprise governance at a growth point',
         tagline: 'Your enterprise is maturing, and governance structures need to keep pace with complexity.',
@@ -2076,7 +2018,6 @@
           'Implementation rhythms that keep leadership accountable without micromanaging.'
         ]
       },
-
       'native-entity|operations': {
         title: 'Enterprises balancing mission and margin',
         tagline: 'You\'re responsible for a business or portfolio that has to perform financially and deliver for Native shareholders or citizens.',
@@ -2091,7 +2032,6 @@
           'Supporting strategic planning that ties enterprise decisions back to community outcomes.'
         ]
       },
-
       'native-entity|data': {
         title: 'Using data to drive enterprise performance',
         tagline: 'You have data across the enterprise, but it\'s not yet driving decisions the way it could.',
@@ -2106,7 +2046,6 @@
           'Reporting frameworks that satisfy governance requirements and inform strategy.'
         ]
       },
-
       'native-entity|partnerships': {
         title: 'Managing complex business relationships',
         tagline: 'Your enterprise works with multiple partners, and those relationships need intentional management.',
@@ -2121,7 +2060,6 @@
           'Negotiation and structuring assistance that protects enterprise interests.'
         ]
       },
-
       'native-entity|funding': {
         title: 'Strengthening enterprise financial position',
         tagline: 'Your enterprise needs financial structures that support growth and resilience.',
@@ -2137,7 +2075,9 @@
         ]
       },
 
+      // ==================
       // NON-NATIVE ORGS
+      // ==================
       'non-native-org|governance': {
         title: 'Building governance for tribal partnership',
         tagline: 'Your organization wants to partner well with tribes, and that starts with how you\'re structured.',
@@ -2152,7 +2092,6 @@
           'Training for leadership and staff on tribal sovereignty and governance.'
         ]
       },
-
       'non-native-org|operations': {
         title: 'Operations that respect tribal context',
         tagline: 'Your programs touch tribal communities, and operations need to reflect that reality.',
@@ -2167,7 +2106,6 @@
           'Feedback and accountability structures that center tribal voice.'
         ]
       },
-
       'non-native-org|data': {
         title: 'Data practices that respect tribal sovereignty',
         tagline: 'You collect data that involves tribal communities, and your practices need to reflect tribal data sovereignty.',
@@ -2182,7 +2120,6 @@
           'Training on tribal data sovereignty principles and practices.'
         ]
       },
-
       'non-native-org|partnerships': {
         title: 'Partnering with Native nations in a better way',
         tagline: 'You\'re trying to work alongside Native nations and organizations and want to do it with more clarity, respect, and alignment.',
@@ -2197,7 +2134,6 @@
           'Supporting joint planning sessions where tribal and partner priorities can be aligned honestly.'
         ]
       },
-
       'non-native-org|funding': {
         title: 'Funding approaches that support tribal priorities',
         tagline: 'Your organization funds or resources work in Indian Country and wants to do it more effectively.',
@@ -2213,7 +2149,9 @@
         ]
       },
 
+      // ==================
       // OTHER NATIVE-SERVING
+      // ==================
       'other|governance': {
         title: 'Governance for a unique institution',
         tagline: 'Your institution doesn\'t fit neatly into categories, and governance needs to reflect that complexity.',
@@ -2228,7 +2166,6 @@
           'Governance redesign that fits your unique context and mission.'
         ]
       },
-
       'other|operations': {
         title: 'Operations for a complex institution',
         tagline: 'Your institution serves multiple purposes and populations, and operations need to hold that complexity.',
@@ -2243,7 +2180,6 @@
           'Role clarification and workload analysis.'
         ]
       },
-
       'other|data': {
         title: 'Data for a multi-faceted institution',
         tagline: 'Your institution generates data across multiple functions, and it\'s not yet working together.',
@@ -2258,7 +2194,6 @@
           'Evaluation framework that captures institutional impact.'
         ]
       },
-
       'other|partnerships': {
         title: 'Navigating a complex partner landscape',
         tagline: 'Your institution works with many partners, and those relationships need intentional management.',
@@ -2273,7 +2208,6 @@
           'Coordination structures that reduce burden while maintaining relationships.'
         ]
       },
-
       'other|funding': {
         title: 'Sustainable funding for a unique institution',
         tagline: 'Your institution needs funding structures that support your unique mission and model.',
@@ -2289,7 +2223,9 @@
         ]
       },
 
+      // ==================
       // GENERIC FALLBACKS BY FOCUS
+      // ==================
       'any|governance': {
         title: 'Clarifying direction and decision-making',
         tagline: 'You\'re at a moment where governance, structure, and long-term direction matter as much as any single program.',
@@ -2304,7 +2240,6 @@
           'Implementation check-ins so strategy doesn\'t die on the shelf.'
         ]
       },
-
       'any|operations': {
         title: 'Turning good ideas into repeatable practice',
         tagline: 'The work is there in pieces; the challenge is stitching it into something that holds under real pressure.',
@@ -2319,7 +2254,6 @@
           'Building operating rhythms—meetings, check-ins, and reporting—that feel helpful, not burdensome.'
         ]
       },
-
       'any|data': {
         title: 'Making information work for you, not just funders',
         tagline: 'There is data in the system. The question is how to make it meaningful for your decisions and your story.',
@@ -2334,7 +2268,6 @@
           'Building feedback loops so data shapes how programs evolve over time.'
         ]
       },
-
       'any|partnerships': {
         title: 'Aligning people who care about the same outcomes',
         tagline: 'Multiple organizations are trying to help. The risk is everyone pulling in slightly different directions.',
@@ -2349,7 +2282,6 @@
           'Clarifying what needs to stay with Native-led institutions versus what partners can carry.'
         ]
       },
-
       'any|funding': {
         title: 'Building something that lasts beyond one grant',
         tagline: 'Funding is a tool—not the whole plan. You\'re trying to move from scrambling to sustaining.',
@@ -2365,9 +2297,12 @@
         ]
       },
 
-      default: {
+      // ==================
+      // DEFAULT FALLBACK
+      // ==================
+      'default': {
         title: 'A moment for alignment and structure',
-        tagline: 'You\'re doing meaningful work in Native communities or alongside Native nations, and the next step is tightening how that work is organized and supported.',
+        tagline: 'You\'re doing important work in Native communities or alongside Native nations, and the next step is tightening how the work is organized and supported.',
         bullets: [
           'You\'re carrying real responsibilities with limited time to step back and see the whole picture.',
           'Pieces of strategy, operations, and data are present, but not yet fully aligned.',
@@ -2381,41 +2316,44 @@
       }
     };
 
+    // Look up profile
     var key = keyOrg + '|' + keyFocus;
     var profile = profiles[key];
 
     if (!profile) {
       var anyKey = 'any|' + keyFocus;
-      profile = profiles[anyKey] || profiles.default;
+      profile = profiles[anyKey] || profiles['default'];
     }
+
+    var title = profile.title;
+    var tagline = profile.tagline;
+    var bullets = profile.bullets || [];
+    var icdAreas = profile.icdAreas || [];
+
+    // Build HTML
+    var bulletItems = bullets.map(function(item) {
+      return '<li>' + escapeHtml(item) + '</li>';
+    }).join('');
+
+    var icdItems = icdAreas.map(function(item) {
+      return '• ' + escapeHtml(item);
+    }).join('<br>');
 
     var orgText = orgLabels[selections.org] || 'Not specified';
     var focusText = focusLabels[selections.focus] || 'Not specified';
     var stateText = stateLabels[selections.state] || 'Not specified';
 
     var frictionHtml = '';
-    if (selections.state) {
-      var fOrgKey = selections.org || 'default';
-      var frictionSet = stateFriction[fOrgKey] || stateFriction.default;
-      var fr = frictionSet[selections.state];
-      if (fr) {
-        frictionHtml =
-          '<p class="lab-result-friction">' +
+    if (selections.state && stateFriction[selections.state]) {
+      var fr = stateFriction[selections.state];
+      frictionHtml = 
+        '<p class="lab-result-friction">' +
           '<strong>Friction you named – ' + escapeHtml(fr.title) + ':</strong><br>' +
           escapeHtml(fr.text) +
-          '</p>';
-      }
+        '</p>';
     }
 
-    var bulletItems = (profile.bullets || []).map(function (item) {
-      return '<li>' + escapeHtml(item) + '</li>';
-    }).join('');
-
-    var icdItems = (profile.icdAreas || []).map(function (item) {
-      return '• ' + escapeHtml(item);
-    }).join('<br>');
-
-    resultEl.innerHTML =
+    resultEl.innerHTML = 
       '<div class="lab-result-card" id="lab-result-card-inner">' +
         '<p class="lab-result-kicker">Your snapshot</p>' +
         '<p class="lab-result-summary">' +
@@ -2423,8 +2361,8 @@
           '<strong>Focus:</strong> ' + escapeHtml(focusText) + ' · ' +
           '<strong>Friction:</strong> ' + escapeHtml(stateText) +
         '</p>' +
-        '<h3 class="lab-result-title">' + escapeHtml(profile.title) + '</h3>' +
-        '<p class="lab-result-tagline">' + escapeHtml(profile.tagline) + '</p>' +
+        '<h3 class="lab-result-title">' + escapeHtml(title) + '</h3>' +
+        '<p class="lab-result-tagline">' + escapeHtml(tagline) + '</p>' +
         frictionHtml +
         '<ul class="lab-result-list">' +
           bulletItems +
@@ -2436,15 +2374,18 @@
         '</p>' +
       '</div>';
 
+    // Animate card in
     var card = document.getElementById('lab-result-card-inner');
     if (card) {
-      requestAnimationFrame(function () {
+      requestAnimationFrame(function() {
         card.classList.add('show');
       });
     }
 
+    // Scroll to result with header offset
     scrollToElement(resultEl);
 
+    // Dispatch custom event for analytics
     try {
       var evt = new CustomEvent('icdStartingPointSubmit', {
         detail: {
@@ -2455,10 +2396,11 @@
       });
       window.dispatchEvent(evt);
     } catch (e) {
-      // ignore if CustomEvent not supported
+      // CustomEvent not supported in older browsers - fail silently
     }
   }
 
+  // Simple HTML escaping for safety
   function escapeHtml(text) {
     if (!text) return '';
     var div = document.createElement('div');
@@ -2466,25 +2408,32 @@
     return div.innerHTML;
   }
 
-  // OPTION CLICK + KEYBOARD HANDLERS
-  options.forEach(function (btn) {
-    btn.addEventListener('click', function () {
+  /* ========================================
+     EVENT HANDLERS
+     ======================================== */
+
+  // Option click
+  options.forEach(function(btn) {
+    btn.addEventListener('click', function() {
       var question = btn.getAttribute('data-question');
       var value = btn.getAttribute('data-value');
       if (!question || !value) return;
 
+      // Deselect all options in this question
       options
-        .filter(function (o) {
+        .filter(function(o) {
           return o.getAttribute('data-question') === question;
         })
-        .forEach(function (o) {
+        .forEach(function(o) {
           o.classList.remove('selected');
         });
 
+      // Select this option
       btn.classList.add('selected');
       selections[question] = value;
 
       if (question === 'org') {
+        // Update Q2/Q3 text + options when org changes
         applyOrgSpecificCopy();
       }
 
@@ -2493,19 +2442,21 @@
       updateProgress();
       updateHashFromSelections();
 
+      // Auto-advance to next question
       var index = questions.indexOf(question);
       if (index !== -1 && index < totalQuestions - 1) {
-        setTimeout(function () {
+        setTimeout(function() {
           goToStep(index + 1);
-        }, 150);
+        }, 150); // Small delay for visual feedback
       }
     });
 
-    btn.addEventListener('keydown', function (e) {
+    // Keyboard navigation within radiogroup
+    btn.addEventListener('keydown', function(e) {
       var question = btn.getAttribute('data-question');
       if (!question) return;
 
-      var groupOptions = options.filter(function (o) {
+      var groupOptions = options.filter(function(o) {
         return o.getAttribute('data-question') === question;
       });
       var currentIndex = groupOptions.indexOf(btn);
@@ -2534,18 +2485,20 @@
     });
   });
 
+  // Reset button
   if (resetBtn) {
-    resetBtn.addEventListener('click', function () {
-      options.forEach(function (o) {
+    resetBtn.addEventListener('click', function() {
+      options.forEach(function(o) {
         o.classList.remove('selected');
         o.setAttribute('aria-checked', 'false');
       });
 
-      questions.forEach(function (q) {
-        var groupOptions = options.filter(function (o) {
+      // Reset tabindex - first option in each group gets tabindex 0
+      questions.forEach(function(q) {
+        var groupOptions = options.filter(function(o) {
           return o.getAttribute('data-question') === q;
         });
-        groupOptions.forEach(function (o, idx) {
+        groupOptions.forEach(function(o, idx) {
           o.setAttribute('tabindex', idx === 0 ? '0' : '-1');
         });
       });
@@ -2557,13 +2510,14 @@
       clearResult();
       updateProgress();
       updateHashFromSelections();
-      applyOrgSpecificCopy();
+      applyOrgSpecificCopy(); // back to default copy
       goToStep(0);
     });
   }
 
+  // Back button
   if (backBtn) {
-    backBtn.addEventListener('click', function () {
+    backBtn.addEventListener('click', function() {
       if (currentStepIndex > 0) {
         clearResult();
         goToStep(currentStepIndex - 1);
@@ -2571,18 +2525,25 @@
     });
   }
 
+  // Submit button
   if (submitBtn) {
-    submitBtn.addEventListener('click', function () {
-      var allAnswered = questions.every(function (q) {
-        return !!selections[q];
+    submitBtn.addEventListener('click', function() {
+      var allAnswered = questions.every(function(q) {
+        return selections[q];
       });
       if (!allAnswered) return;
       buildProfile();
     });
   }
-  // INITIALIZE ON LOAD
+
+  /* ========================================
+     INITIALIZATION
+     ======================================== */
+
+  // Start with default copy, then apply any URL params
+  applyOrgSpecificCopy();
   applySelectionsFromParams();
-});
+
 })();
 </script>
 </body>
