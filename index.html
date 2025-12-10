@@ -2304,23 +2304,47 @@
     }
 
     // Attach PDF download handler
-    var downloadBtn = document.getElementById('lab-download-pdf');
-    if (downloadBtn && typeof html2pdf !== 'undefined') {
-      downloadBtn.addEventListener('click', function() {
-        var cardEl = document.getElementById('lab-result-card-inner');
-        if (!cardEl) return;
+var downloadBtn = document.getElementById('lab-download-pdf');
+if (downloadBtn && typeof html2pdf !== 'undefined') {
+  downloadBtn.addEventListener('click', function() {
+    var cardEl = document.getElementById('lab-result-card-inner');
+    if (!cardEl) return;
 
-        var opt = {
-          margin: 0.6,
-          filename: 'ICD-StartingPoint-Snapshot.pdf',
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true },
-          jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-        };
+    // Clone the card so we can modify styles for PDF without affecting the page
+    var clone = cardEl.cloneNode(true);
+    clone.style.opacity = '1';
+    clone.style.transform = 'none';
+    clone.style.background = '#ffffff';
+    clone.style.padding = '24px';
+    clone.style.width = '700px';
+    
+    // Remove the download button from the clone
+    var actionsEl = clone.querySelector('.lab-result-actions');
+    if (actionsEl) actionsEl.remove();
 
-        html2pdf().set(opt).from(cardEl).save();
-      });
-    }
+    // Temporarily append clone to body (off-screen)
+    clone.style.position = 'absolute';
+    clone.style.left = '-9999px';
+    document.body.appendChild(clone);
+
+    var opt = {
+      margin: 0.5,
+      filename: 'ICD-StartingPoint-Snapshot.pdf',
+      image: { type: 'png', quality: 1 },
+      html2canvas: { 
+        scale: 2, 
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        logging: false
+      },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(clone).save().then(function() {
+      document.body.removeChild(clone);
+    });
+  });
+}
 
     scrollToElement(resultEl);
 
