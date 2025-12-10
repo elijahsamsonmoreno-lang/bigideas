@@ -2,9 +2,9 @@
 <html lang="en" class="no-js">
 <head>
   <meta charset="UTF-8" />
-  <title>Indian Country Development – Strategy Lab</title>
+  <title>Indian Country Development – Starting Point</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Indian Country Strategy Lab – a guided diagnostic for Native-led governments, organizations, and partners to understand where strategy, operations, and data support can have the most impact.">
+  <meta name="description" content="Starting Point – a 3-question diagnostic for Native-led governments, organizations, and partners to see where strategy, operations, and data support could have the most impact.">
   <meta name="keywords" content="tribal consulting, Indian Country strategy, Native organizations, tribal governance, Indigenous consulting, operations, data, evaluation">
 
   <!-- FONT -->
@@ -43,8 +43,6 @@
       --accent-soft: rgba(15, 156, 147, 0.16);
       --accent-soft-light: rgba(15, 156, 147, 0.06);
       --accent-glow: rgba(15, 156, 147, 0.25);
-      --cta-purple: #4c1d95;
-      --cta-purple-soft: rgba(76, 29, 149, 0.16);
       --line: rgba(15, 23, 42, 0.08);
       --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 
@@ -281,10 +279,12 @@
     /* QUESTIONS */
     #icd-site .lab-question {
       margin-bottom: 2.3rem;
+      border: none;
+      padding: 0;
     }
 
     #icd-site .lab-question-title {
-      font-size: 1.02rem;
+      font-size: 1.15rem;
       font-weight: 600;
       margin: 0 0 0.45rem;
       color: var(--ink);
@@ -302,6 +302,10 @@
       gap: 0.9rem;
     }
 
+    #icd-site .lab-options-grid[role="radiogroup"] {
+      margin-top: 0.3rem;
+    }
+
     #icd-site .lab-option {
       border: 1px solid rgba(15,23,42,0.08);
       border-radius: 12px;
@@ -312,7 +316,11 @@
       display: flex;
       align-items: flex-start;
       gap: 0.7rem;
-      transition: border 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, transform 0.1s ease;
+      transition:
+        border 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease,
+        transform 0.12s ease;
     }
 
     #icd-site .lab-option:hover {
@@ -330,17 +338,28 @@
       border-color: var(--accent);
       box-shadow: 0 10px 30px rgba(15,23,42,0.12);
       background: linear-gradient(to bottom right, rgba(15,156,147,0.035), rgba(15,156,147,0.12));
+      transform: translateY(-1px);
+      animation: lab-option-pulse 0.14s ease-out;
     }
 
-    #icd-site .lab-option-icon {
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
+    @keyframes lab-option-pulse {
+      0% { transform: scale(0.99); }
+      100% { transform: scale(1); }
+    }
+
+    #icd-site .lab-option-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.4rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       background: var(--accent-soft-light);
+      color: var(--accent);
       flex-shrink: 0;
     }
 
@@ -362,7 +381,7 @@
       line-height: 1.5;
     }
 
-    /* ACTIONS */
+    /* ACTIONS + PROGRESS */
     #icd-site .lab-actions {
       display: flex;
       justify-content: space-between;
@@ -377,9 +396,27 @@
     #icd-site .lab-actions-left {
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.35rem;
       font-size: 0.82rem;
       color: var(--ink-muted);
+      flex: 1;
+    }
+
+    #icd-site .lab-progress-bar {
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.05);
+      overflow: hidden;
+      position: relative;
+    }
+
+    #icd-site .lab-progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-light));
+      transition: width 0.22s ease-out;
     }
 
     #icd-site .lab-progress {
@@ -390,6 +427,7 @@
     #icd-site .lab-actions-buttons {
       display: flex;
       gap: 0.6rem;
+      flex-shrink: 0;
     }
 
     #icd-site .lab-button {
@@ -436,6 +474,7 @@
     /* RESULT CARD */
     #icd-site .lab-result {
       margin-bottom: 2.5rem;
+      min-height: 0.5rem;
     }
 
     #icd-site .lab-result-card {
@@ -444,6 +483,14 @@
       background: rgba(255,255,255,0.98);
       box-shadow: 0 18px 45px rgba(15,23,42,0.18);
       border-left: 3px solid var(--accent);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.22s ease-out, transform 0.22s ease-out;
+    }
+
+    #icd-site .lab-result-card.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     #icd-site .lab-result-kicker {
@@ -452,7 +499,18 @@
       text-transform: uppercase;
       color: var(--accent);
       font-weight: 700;
-      margin: 0 0 0.45rem;
+      margin: 0 0 0.4rem;
+    }
+
+    #icd-site .lab-result-summary {
+      font-size: 0.84rem;
+      color: var(--ink-muted);
+      margin: 0 0 0.8rem;
+    }
+
+    #icd-site .lab-result-summary strong {
+      color: var(--ink-soft);
+      font-weight: 600;
     }
 
     #icd-site .lab-result-title {
@@ -467,6 +525,20 @@
       color: var(--ink-soft);
       margin: 0 0 1.1rem;
       line-height: 1.7;
+    }
+
+    #icd-site .lab-result-friction {
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      margin: 0 0 1rem;
+      padding: 0.75rem 0.9rem;
+      border-radius: 10px;
+      background: var(--accent-soft-light);
+    }
+
+    #icd-site .lab-result-friction strong {
+      color: var(--accent);
+      font-weight: 600;
     }
 
     #icd-site .lab-result-list {
@@ -582,7 +654,7 @@
 <body>
 <div id="icd-site">
 
-  <h1 class="sr-only">Indian Country Strategy Lab – Indian Country Development</h1>
+  <h1 class="sr-only">Starting Point – Indian Country Development diagnostic</h1>
 
   <!-- FIXED HEADER + HAMBURGER -->
   <header class="icd-header">
@@ -618,21 +690,20 @@
     <a href="what-we-do.html">What We Do</a>
     <a href="work.html">Who We Work With</a>
     <a href="who-we-are.html">Who We Are</a>
-    <a href="strategy-lab.html" class="active" aria-current="page">Strategy Lab</a>
+    <a href="strategy-lab.html" class="active" aria-current="page">Starting Point</a>
     <a href="contact.html">Contact</a>
   </nav>
 
   <main role="main">
     <section class="section section--wide">
       <div class="section-label">
-        <span class="label-text">Strategy Lab</span>
+        <span class="label-text">Starting Point</span>
         <span class="label-line"></span>
       </div>
 
       <div class="lab-intro">
-        A short diagnostic to reflect on where your work is today and where outside support could actually help.
-        Choose the options that feel closest to your reality—the output is not a score, it’s a snapshot of how we’d
-        typically partner with organizations in a similar spot.
+        Three short questions to locate where your work is today and where outside support might actually help.
+        The output is not a score—it’s a snapshot of how we’d typically partner with organizations in a similar spot.
         <p class="lab-intro-italic">
           This doesn’t replace community input or formal planning. It’s a starting point for a clearer conversation.
         </p>
@@ -640,152 +711,222 @@
 
       <form id="strategy-lab-form" novalidate>
         <!-- Q1: ORG TYPE -->
-        <div class="lab-question" data-question="org">
-          <h2 class="lab-question-title">Who are you doing this work as?</h2>
+        <fieldset class="lab-question" data-question="org">
+          <legend class="lab-question-title">Where do you sit?</legend>
           <p class="lab-question-help">Pick the option that best matches your role or the organization you’re thinking about.</p>
 
-          <div class="lab-options-grid">
-            <button type="button" class="lab-option" data-question="org" data-value="tribal-gov">
-              <span class="lab-option-icon" aria-hidden="true">🏛️</span>
+          <div class="lab-options-grid" role="radiogroup" aria-label="Organization type">
+            <!-- 1. Tribal government -->
+            <button type="button" class="lab-option"
+              data-question="org" data-value="tribal-gov"
+              role="radio" aria-checked="false" tabindex="0">
+              <span class="lab-option-badge" aria-hidden="true">TG</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">Tribal Nation / Tribal Government</span>
-                <span class="lab-option-sub">Council, administration, or a department inside tribal government.</span>
+                <span class="lab-option-label">Tribal government / Tribal Nation</span>
+                <span class="lab-option-sub">
+                  Council, administration, or a department inside tribal government.
+                </span>
               </span>
             </button>
 
-            <button type="button" class="lab-option" data-question="org" data-value="enterprise">
-              <span class="lab-option-icon" aria-hidden="true">🏢</span>
+            <!-- 2. Native entity / enterprise (tribal, ANC, NHO) -->
+            <button type="button" class="lab-option"
+              data-question="org" data-value="native-entity"
+              role="radio" aria-checked="false" tabindex="-1">
+              <span class="lab-option-badge" aria-hidden="true">NE</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">Tribal Enterprise / ANC</span>
-                <span class="lab-option-sub">Enterprise leadership, holding company, or Alaska Native Corporation.</span>
+                <span class="lab-option-label">Native entity / enterprise (tribal, ANC, NHO)</span>
+                <span class="lab-option-sub">
+                  Tribal enterprise, Alaska Native Corporation, or Native Hawaiian Organization.
+                </span>
               </span>
             </button>
 
-            <button type="button" class="lab-option" data-question="org" data-value="native-org">
-              <span class="lab-option-icon" aria-hidden="true">🌱</span>
+            <!-- 3. Native-led organization -->
+            <button type="button" class="lab-option"
+              data-question="org" data-value="native-org"
+              role="radio" aria-checked="false" tabindex="-1">
+              <span class="lab-option-badge" aria-hidden="true">NL</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">Native-led Nonprofit / Urban Indian Org</span>
-                <span class="lab-option-sub">Native-serving organization with its own board or leadership team.</span>
+                <span class="lab-option-label">Native-led organization</span>
+                <span class="lab-option-sub">
+                  Native-led nonprofit, Urban Indian organization, coalition, or independent entity.
+                </span>
               </span>
             </button>
 
-            <button type="button" class="lab-option" data-question="org" data-value="partner">
-              <span class="lab-option-icon" aria-hidden="true">🤝</span>
+            <!-- 4. Non-Native org working in Indian Country -->
+            <button type="button" class="lab-option"
+              data-question="org" data-value="non-native-org"
+              role="radio" aria-checked="false" tabindex="-1">
+              <span class="lab-option-badge" aria-hidden="true">NN</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">State, Federal, or Philanthropic Partner</span>
-                <span class="lab-option-sub">Working with tribes or Native communities from outside government-to-government structures.</span>
+                <span class="lab-option-label">Non-Native organization in Indian Country</span>
+                <span class="lab-option-sub">
+                  State, federal, philanthropic, university, or other non-Native organization partnering with Native communities.
+                </span>
               </span>
             </button>
 
-            <button type="button" class="lab-option" data-question="org" data-value="other">
-              <span class="lab-option-icon" aria-hidden="true">🧩</span>
+            <!-- 5. Other Native-serving institution -->
+            <button type="button" class="lab-option"
+              data-question="org" data-value="other"
+              role="radio" aria-checked="false" tabindex="-1">
+              <span class="lab-option-badge" aria-hidden="true">OT</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">Other Native-serving Institution</span>
-                <span class="lab-option-sub">Education, health, coalition, or something that doesn’t fit neatly above.</span>
+                <span class="lab-option-label">Other Native-serving institution</span>
+                <span class="lab-option-sub">
+                  Tribal college, coalition, health system, or something that doesn’t fit neatly above.
+                </span>
               </span>
             </button>
           </div>
-        </div>
+        </fieldset>
 
         <!-- Q2: FOCUS AREA -->
-        <div class="lab-question" data-question="focus">
-          <h2 class="lab-question-title">Where do you most need support right now?</h2>
-          <p class="lab-question-help">Not everything at once—where would change unlock the most downstream impact?</p>
+        <fieldset class="lab-question" data-question="focus">
+          <legend class="lab-question-title">Where do you most need support right now?</legend>
+          <p class="lab-question-help">
+            Not everything at once—where would change unlock the most downstream impact?
+          </p>
 
-          <div class="lab-options-grid">
-            <button type="button" class="lab-option" data-question="focus" data-value="governance">
-              <span class="lab-option-icon" aria-hidden="true">📜</span>
+          <div class="lab-options-grid" role="radiogroup" aria-label="Focus area">
+            <button type="button" class="lab-option"
+              data-question="focus" data-value="governance"
+              role="radio" aria-checked="false" tabindex="0">
+              <span class="lab-option-badge" aria-hidden="true">SG</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">Strategy &amp; Governance</span>
-                <span class="lab-option-sub">Constitution, codes, councils, boards, long-term direction, or alignment across leaders.</span>
+                <span class="lab-option-label">Strategy &amp; governance</span>
+                <span class="lab-option-sub">
+                  Long-term direction, structures, alignment across leaders and decision-makers.
+                </span>
               </span>
             </button>
 
-            <button type="button" class="lab-option" data-question="focus" data-value="operations">
-              <span class="lab-option-icon" aria-hidden="true">⚙️</span>
+            <button type="button" class="lab-option"
+              data-question="focus" data-value="operations"
+              role="radio" aria-checked="false" tabindex="-1">
+              <span class="lab-option-badge" aria-hidden="true">OP</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">Programs &amp; Operations</span>
-                <span class="lab-option-sub">Roles, processes, handoffs, workplans, and how work actually gets done day to day.</span>
+                <span class="lab-option-label">Programs &amp; operations</span>
+                <span class="lab-option-sub">
+                  Roles, processes, handoffs, and how work actually gets done day to day.
+                </span>
               </span>
             </button>
 
-            <button type="button" class="lab-option" data-question="focus" data-value="data">
-              <span class="lab-option-icon" aria-hidden="true">📊</span>
+            <button type="button" class="lab-option"
+              data-question="focus" data-value="data"
+              role="radio" aria-checked="false" tabindex="-1">
+              <span class="lab-option-badge" aria-hidden="true">DT</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">Data, Evaluation, &amp; Evidence</span>
-                <span class="lab-option-sub">Collecting, cleaning, and using information so leadership and staff can make decisions.</span>
+                <span class="lab-option-label">Data, evaluation, &amp; evidence</span>
+                <span class="lab-option-sub">
+                  Collecting, cleaning, and using information so leadership and staff can make decisions.
+                </span>
               </span>
             </button>
 
-            <button type="button" class="lab-option" data-question="focus" data-value="partnerships">
-              <span class="lab-option-icon" aria-hidden="true">🔗</span>
+            <button type="button" class="lab-option"
+              data-question="focus" data-value="partnerships"
+              role="radio" aria-checked="false" tabindex="-1">
+              <span class="lab-option-badge" aria-hidden="true">PA</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">Partnerships &amp; Alignment</span>
-                <span class="lab-option-sub">Getting tribal, Native, public, and private partners rowing in the same direction.</span>
+                <span class="lab-option-label">Partnerships &amp; alignment</span>
+                <span class="lab-option-sub">
+                  Getting tribal, Native, public, and private partners rowing in the same direction.
+                </span>
               </span>
             </button>
 
-            <button type="button" class="lab-option" data-question="focus" data-value="funding">
-              <span class="lab-option-icon" aria-hidden="true">💰</span>
+            <button type="button" class="lab-option"
+              data-question="focus" data-value="funding"
+              role="radio" aria-checked="false" tabindex="-1">
+              <span class="lab-option-badge" aria-hidden="true">FD</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">Funding, Grants, &amp; Sustainability</span>
-                <span class="lab-option-sub">Lining up resources, reporting, and structures so work can last beyond one grant cycle.</span>
+                <span class="lab-option-label">Funding &amp; sustainability</span>
+                <span class="lab-option-sub">
+                  Resources, reporting, and structures that can last beyond one grant cycle.
+                </span>
               </span>
             </button>
           </div>
-        </div>
+        </fieldset>
 
-        <!-- Q3: CURRENT STATE -->
-        <div class="lab-question" data-question="state">
-          <h2 class="lab-question-title">What feels most true of your current situation?</h2>
+        <!-- Q3: CURRENT STATE / FRICTION -->
+        <fieldset class="lab-question" data-question="state">
+          <legend class="lab-question-title">What’s the friction right now?</legend>
           <p class="lab-question-help">These are all common. Pick the one that feels closest today.</p>
 
-          <div class="lab-options-grid">
-            <button type="button" class="lab-option" data-question="state" data-value="crowded">
-              <span class="lab-option-icon" aria-hidden="true">📚</span>
+          <div class="lab-options-grid" role="radiogroup" aria-label="Current situation">
+            <button type="button" class="lab-option"
+              data-question="state" data-value="crowded"
+              role="radio" aria-checked="false" tabindex="0">
+              <span class="lab-option-badge" aria-hidden="true">MP</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">Too many priorities at once</span>
-                <span class="lab-option-sub">There’s a long list of needs and opportunities, but not enough structure to sort and sequence.</span>
+                <span class="lab-option-label">Too much at once</span>
+                <span class="lab-option-sub">
+                  There’s a long list of needs and opportunities, but not enough structure to sort and sequence.
+                </span>
               </span>
             </button>
 
-            <button type="button" class="lab-option" data-question="state" data-value="stalled">
-              <span class="lab-option-icon" aria-hidden="true">⏸️</span>
+            <button type="button" class="lab-option"
+              data-question="state" data-value="stalled"
+              role="radio" aria-checked="false" tabindex="-1">
+              <span class="lab-option-badge" aria-hidden="true">SM</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">Plans exist, but follow-through is hard</span>
-                <span class="lab-option-sub">Strategies, resolutions, or MOUs are on paper, but momentum is uneven or stalled.</span>
+                <span class="lab-option-label">Stalled momentum</span>
+                <span class="lab-option-sub">
+                  Plans or resolutions exist, but follow-through is uneven or stalled.
+                </span>
               </span>
             </button>
 
-            <button type="button" class="lab-option" data-question="state" data-value="capacity">
-              <span class="lab-option-icon" aria-hidden="true">🧵</span>
+            <button type="button" class="lab-option"
+              data-question="state" data-value="capacity"
+              role="radio" aria-checked="false" tabindex="-1">
+              <span class="lab-option-badge" aria-hidden="true">ST</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">Capacity is stretched thin</span>
-                <span class="lab-option-sub">People are carrying multiple roles; new work would overload staff unless something changes.</span>
+                <span class="lab-option-label">Stretched thin</span>
+                <span class="lab-option-sub">
+                  People are carrying multiple roles; new work would overload staff unless something changes.
+                </span>
               </span>
             </button>
 
-            <button type="button" class="lab-option" data-question="state" data-value="invisible">
-              <span class="lab-option-icon" aria-hidden="true">🔍</span>
+            <button type="button" class="lab-option"
+              data-question="state" data-value="invisible"
+              role="radio" aria-checked="false" tabindex="-1">
+              <span class="lab-option-badge" aria-hidden="true">IN</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">Good work, but hard to show it</span>
-                <span class="lab-option-sub">Impact is happening on the ground, but stories, data, or outcomes aren’t visible to decision-makers.</span>
+                <span class="lab-option-label">Invisible impact</span>
+                <span class="lab-option-sub">
+                  Good work is happening, but stories, data, or outcomes aren’t visible to decision-makers.
+                </span>
               </span>
             </button>
 
-            <button type="button" class="lab-option" data-question="state" data-value="building">
-              <span class="lab-option-icon" aria-hidden="true">🚀</span>
+            <button type="button" class="lab-option"
+              data-question="state" data-value="building"
+              role="radio" aria-checked="false" tabindex="-1">
+              <span class="lab-option-badge" aria-hidden="true">SF</span>
               <span class="lab-option-content">
-                <span class="lab-option-label">Building something from zero</span>
-                <span class="lab-option-sub">You’re launching a new program, initiative, or entity and want to set it up right the first time.</span>
+                <span class="lab-option-label">Starting fresh</span>
+                <span class="lab-option-sub">
+                  You’re building a new program, initiative, or entity and want to set it up right from the beginning.
+                </span>
               </span>
             </button>
           </div>
-        </div>
+        </fieldset>
 
         <!-- ACTIONS -->
         <div class="lab-actions">
           <div class="lab-actions-left">
+            <div class="lab-progress-bar" aria-hidden="true">
+              <div class="lab-progress-bar-fill" id="lab-progress-bar-fill"></div>
+            </div>
             <span class="lab-progress" id="lab-progress-text">0 of 3 questions answered</span>
             <span>Answer a few questions to see how we’d usually support organizations in a similar place.</span>
           </div>
@@ -794,7 +935,7 @@
               Clear selections
             </button>
             <button type="button" class="lab-button lab-button-primary" id="lab-submit" disabled>
-              See your profile
+              See your snapshot
             </button>
           </div>
         </div>
@@ -851,6 +992,7 @@
   /* STRATEGY LAB LOGIC */
   const options = Array.from(root.querySelectorAll('.lab-option'));
   const progressText = root.querySelector('#lab-progress-text');
+  const progressBarFill = root.querySelector('#lab-progress-bar-fill');
   const submitBtn = root.querySelector('#lab-submit');
   const resetBtn = root.querySelector('#lab-reset');
   const resultEl = root.querySelector('#lab-result');
@@ -862,10 +1004,61 @@
     state: null
   };
 
+  const orgLabels = {
+    'tribal-gov': 'Tribal government / Tribal Nation',
+    'native-entity': 'Native entity / enterprise (tribal, ANC, NHO)',
+    'native-org': 'Native-led organization',
+    'non-native-org': 'Non-Native organization in Indian Country',
+    'other': 'Other Native-serving institution'
+  };
+
+  const focusLabels = {
+    'governance': 'Strategy & governance',
+    'operations': 'Programs & operations',
+    'data': 'Data, evaluation, & evidence',
+    'partnerships': 'Partnerships & alignment',
+    'funding': 'Funding & sustainability'
+  };
+
+  const stateLabels = {
+    'crowded': 'Too much at once',
+    'stalled': 'Stalled momentum',
+    'capacity': 'Stretched thin',
+    'invisible': 'Invisible impact',
+    'building': 'Starting fresh'
+  };
+
+  const stateFriction = {
+    crowded: {
+      title: 'Too much at once',
+      text: 'You named a long list of needs and opportunities. The friction is sequencing—deciding what happens now, what waits, and what drops off the list without guilt.'
+    },
+    stalled: {
+      title: 'Stalled momentum',
+      text: 'You have plans, resolutions, or MOUs on paper. The friction is converting those into steady follow-through and shared accountability.'
+    },
+    capacity: {
+      title: 'Stretched thin',
+      text: 'People are carrying a lot. The friction is adding structure in a way that protects staff, instead of asking the same people to hold even more.'
+    },
+    invisible: {
+      title: 'Invisible impact',
+      text: 'Good work is happening. The friction is surfacing that impact in ways that feel honest to community and legible to decision-makers and funders.'
+    },
+    building: {
+      title: 'Starting fresh',
+      text: 'You’re building something new. The friction is designing the foundation with enough structure to last, without freezing the work in place too early.'
+    }
+  };
+
   function updateProgress() {
     const answered = questions.filter(q => selections[q]).length;
     if (progressText) {
       progressText.textContent = answered + ' of ' + questions.length + ' questions answered';
+    }
+    if (progressBarFill) {
+      const pct = (answered / questions.length) * 100;
+      progressBarFill.style.width = pct + '%';
     }
     if (submitBtn) {
       submitBtn.disabled = answered !== questions.length;
@@ -876,6 +1069,15 @@
     if (resultEl) {
       resultEl.innerHTML = '';
     }
+  }
+
+  function updateRadioGroupA11y(questionKey) {
+    const groupOptions = options.filter(o => o.getAttribute('data-question') === questionKey);
+    groupOptions.forEach((o, idx) => {
+      const isSelected = o.classList.contains('selected');
+      o.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+      o.setAttribute('tabindex', isSelected ? '0' : (idx === 0 ? '0' : '-1'));
+    });
   }
 
   options.forEach(btn => {
@@ -893,19 +1095,55 @@
       btn.classList.add('selected');
       selections[question] = value;
 
+      updateRadioGroupA11y(question);
       clearResult();
       updateProgress();
+      updateHashFromSelections();
+    });
+
+    // Keyboard navigation inside each radiogroup
+    btn.addEventListener('keydown', (e) => {
+      const question = btn.getAttribute('data-question');
+      if (!question) return;
+
+      const groupOptions = options.filter(o => o.getAttribute('data-question') === question);
+      const currentIndex = groupOptions.indexOf(btn);
+      let nextIndex = currentIndex;
+
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        nextIndex = (currentIndex + 1) % groupOptions.length;
+        e.preventDefault();
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        nextIndex = (currentIndex - 1 + groupOptions.length) % groupOptions.length;
+        e.preventDefault();
+      } else if (e.key === ' ' || e.key === 'Enter') {
+        btn.click();
+        e.preventDefault();
+        return;
+      } else {
+        return;
+      }
+
+      const target = groupOptions[nextIndex];
+      if (target) {
+        target.focus();
+      }
     });
   });
 
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
-      options.forEach(o => o.classList.remove('selected'));
+      options.forEach(o => {
+        o.classList.remove('selected');
+        o.setAttribute('aria-checked', 'false');
+        o.setAttribute('tabindex', '0');
+      });
       selections.org = null;
       selections.focus = null;
       selections.state = null;
       clearResult();
       updateProgress();
+      updateHashFromSelections();
     });
   }
 
@@ -985,24 +1223,8 @@
       ]
     },
 
-    // Partners
-    'partner|partnerships': {
-      title: 'Partnering with Native nations in a better way',
-      tagline: 'You’re trying to work alongside Native nations and organizations and want to do it with more clarity, respect, and alignment.',
-      bullets: [
-        'There is interest or mandate to partner with tribes or Native communities, but the “how” is not fully clear.',
-        'Internal processes or timelines don’t always line up with tribal governance or community priorities.',
-        'You want to build trust and long-term relationships, not one-off transactions.'
-      ],
-      icdAreas: [
-        'Orientation and training on sovereignty, governance, and practical partnership design.',
-        'Co-developing partnership frameworks and MOUs that respect Native timelines and decision-making.',
-        'Supporting joint planning sessions where tribal and partner priorities can be aligned honestly.'
-      ]
-    },
-
-    // Enterprises / ANCs
-    'enterprise|operations': {
+    // Native entity / enterprise (tribal, ANC, NHO)
+    'native-entity|operations': {
       title: 'Enterprises balancing mission and margin',
       tagline: 'You’re responsible for a business or portfolio that has to perform financially and deliver for Native shareholders or citizens.',
       bullets: [
@@ -1014,6 +1236,22 @@
         'Clarifying roles and decision rights across boards, executives, and management.',
         'Designing lightweight performance dashboards that center the indicators you actually care about.',
         'Supporting strategic planning that ties enterprise decisions back to community outcomes.'
+      ]
+    },
+
+    // Non-Native orgs
+    'non-native-org|partnerships': {
+      title: 'Partnering with Native nations in a better way',
+      tagline: 'You’re trying to work alongside Native nations and organizations and want to do it with more clarity, respect, and alignment.',
+      bullets: [
+        'There is interest or mandate to partner with tribes or Native communities, but the “how” is not fully clear.',
+        'Internal processes or timelines don’t always line up with tribal governance or community priorities.',
+        'You want to build trust and long-term relationships, not one-off transactions.'
+      ],
+      icdAreas: [
+        'Orientation and training on sovereignty, governance, and practical partnership design.',
+        'Co-developing partnership frameworks and MOUs that respect Native timelines and decision-making.',
+        'Supporting joint planning sessions where tribal and partner priorities can be aligned honestly.'
       ]
     },
 
@@ -1125,11 +1363,33 @@
     const bulletItems = (bullets || []).map(item => '<li>' + item + '</li>').join('');
     const icdItems = (icdAreas || []).map(item => '• ' + item).join('<br>');
 
+    const orgText = orgLabels[selections.org] || 'Not specified';
+    const focusText = focusLabels[selections.focus] || 'Not specified';
+    const stateText = stateLabels[selections.state] || 'Not specified';
+
+    let frictionHtml = '';
+    if (selections.state && stateFriction[selections.state]) {
+      const fr = stateFriction[selections.state];
+      frictionHtml = `
+        <p class="lab-result-friction">
+          <strong>Friction you named – ${fr.title}:</strong><br>
+          ${fr.text}
+        </p>
+      `;
+    }
+
     resultEl.innerHTML = `
-      <div class="lab-result-card">
+      <div class="lab-result-card" id="lab-result-card-inner">
         <p class="lab-result-kicker">Your snapshot</p>
+        <p class="lab-result-summary">
+          You selected
+          <strong>Org:</strong> ${orgText} •
+          <strong>Focus:</strong> ${focusText} •
+          <strong>Friction:</strong> ${stateText}
+        </p>
         <h3 class="lab-result-title">${title}</h3>
         <p class="lab-result-tagline">${tagline}</p>
+        ${frictionHtml}
         <ul class="lab-result-list">
           ${bulletItems}
         </ul>
@@ -1141,7 +1401,24 @@
       </div>
     `;
 
+    const card = document.getElementById('lab-result-card-inner');
+    if (card) {
+      requestAnimationFrame(() => {
+        card.classList.add('show');
+      });
+    }
+
     resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Simple analytics hook you can listen for if you want
+    try {
+      const evt = new CustomEvent('icdStartingPointSubmit', {
+        detail: { ...selections }
+      });
+      window.dispatchEvent(evt);
+    } catch (e) {
+      // noop
+    }
   }
 
   if (submitBtn) {
@@ -1152,7 +1429,60 @@
     });
   }
 
+  function updateHashFromSelections() {
+    const answered = questions.filter(q => selections[q]).length;
+    if (!answered) {
+      history.replaceState(null, '', window.location.pathname);
+      return;
+    }
+    const params = new URLSearchParams();
+    if (selections.org) params.set('org', selections.org);
+    if (selections.focus) params.set('focus', selections.focus);
+    if (selections.state) params.set('state', selections.state);
+    const newUrl = window.location.pathname + '?' + params.toString();
+    history.replaceState(null, '', newUrl);
+  }
+
+  function applySelectionsFromParams() {
+    const params = new URLSearchParams(window.location.search);
+    let changed = false;
+
+    questions.forEach(q => {
+      const val = params.get(q);
+      if (val && selections[q] !== val) {
+        selections[q] = val;
+        changed = true;
+      }
+    });
+
+    if (!changed) {
+      updateProgress();
+      return;
+    }
+
+    // Reflect selections in UI
+    questions.forEach(q => {
+      const val = selections[q];
+      if (!val) return;
+      const btn = options.find(o =>
+        o.getAttribute('data-question') === q &&
+        o.getAttribute('data-value') === val
+      );
+      if (btn) {
+        // Clear others
+        options
+          .filter(o => o.getAttribute('data-question') === q)
+          .forEach(o => o.classList.remove('selected'));
+        btn.classList.add('selected');
+        updateRadioGroupA11y(q);
+      }
+    });
+
+    updateProgress();
+  }
+
   // Initialize
+  applySelectionsFromParams();
   updateProgress();
 })();
 </script>
